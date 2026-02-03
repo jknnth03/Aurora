@@ -1,0 +1,156 @@
+$color: (
+	light: (
+		primary: (
+			main: "#00FF00",
+			// Matrix green
+			light: "#66FF66",
+			// Lighter green
+			dark: "#00B300",
+			// Darker green
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#00FFFF",
+			// Cyber blue
+			light: "#66FFFF",
+			// Lighter blue
+			dark: "#00B3B3",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F5F5F5",
+			// Light gray
+			dark: "#E1E1E1",
+			// Slightly darker white
+			contrastText: "#008080",
+			// Terminal text color
+		),
+		background: (
+			main: "#F0FFF0",
+			// Code glow (light greenish)
+			light: "#E0FFE0",
+			// Lighter glow
+			dark: "#C0FFC0",
+			// Darker glow
+			contrastText: "#008080",
+			// Terminal text color
+		),
+		text: (
+			main: "#008080",
+			// Terminal text color
+			light: "#66B2B2",
+			// Lighter text color
+			dark: "#005757",
+			// Darker text color
+			contrastText: "#fff",
+			// White text for contrast
+		),
+		warning: (
+			main: "#FFD700",
+			// Gold
+			light: "#FFEB66",
+			// Lighter gold
+			dark: "#B38600",
+			// Darker gold
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#9b4444",
+			// Fiery red for error
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#32CD32",
+			// Lime green
+			light: "#66FF66",
+			// Lighter lime green
+			dark: "#2A9D2F",
+			// Darker lime green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#00FF00",
+			// Matrix green
+			light: "#66FF66",
+			// Lighter green
+			dark: "#00B300",
+			// Darker green
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#00FFFF",
+			// Cyber blue
+			light: "#66FFFF",
+			// Lighter blue
+			dark: "#00B3B3",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F5F5F5",
+			// Light gray
+			dark: "#2D2D2D",
+			// Dark gray for night mode
+			contrastText: "#00FF00",
+			// Matrix text color
+		),
+		background: (
+			main: "#0A0A0A",
+			// Dark terminal background
+			light: "#1A1A1A",
+			// Slightly lighter terminal
+			dark: "#151515",
+			// Darker terminal
+			contrastText: "#00FF00",
+			// Matrix text color
+		),
+		text: (
+			main: "#00FF00",
+			// Matrix text color
+			light: "#66FF66",
+			// Lighter green text
+			dark: "#00B300",
+			// Darker text color
+			contrastText: "#0A0A0A",
+			// Dark background for contrast
+		),
+		warning: (
+			main: "#FFE44D",
+			// Yellow warning
+			light: "#FFEB66",
+			// Lighter yellow
+			dark: "#B39B00",
+			// Darker yellow
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			// Fiery error red
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#00FF00",
+			// Matrix green
+			light: "#66FF66",
+			// Lighter green
+			dark: "#2A9D2F",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+);

@@ -1,0 +1,156 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FF0000",
+			// Spider-Man red
+			light: "#FF4D4D",
+			// Lighter red
+			dark: "#B20000",
+			// Darker red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#0033CC",
+			// Spider-Man blue
+			light: "#3366FF",
+			// Lighter blue
+			dark: "#002080",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F0F0F0",
+			// Light gray
+			dark: "#E0E0E0",
+			// Darker gray
+			contrastText: "#1A1A1A",
+			// Dark text
+		),
+		background: (
+			main: "#FFF8F8",
+			// Web-like white
+			light: "#F0F0FF",
+			// Blue tint background
+			dark: "#E5E5E5",
+			// Light gray
+			contrastText: "#1A1A1A",
+			// Dark text
+		),
+		text: (
+			main: "#1A1A1A",
+			// Dark text
+			light: "#BDBDBD",
+			// Light gray text
+			dark: "#000000",
+			// Black text
+			contrastText: "#FFF8F8",
+			// Web-like white background
+		),
+		warning: (
+			main: "#FFD700",
+			// Gold accent
+			light: "#FFEB3B",
+			// Lighter gold
+			dark: "#FF9800",
+			// Darker gold
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#9b4444",
+			// Fiery red for error
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#2e7d32",
+			// Success green
+			light: "#388E3C",
+			// Lighter green
+			dark: "#1B5E20",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FF3939",
+			// Lighter Spider-Man red
+			light: "#FF6666",
+			// Soft red
+			dark: "#B20000",
+			// Darker red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#0044FF",
+			// Brighter Spider-Man blue
+			light: "#3366FF",
+			// Lighter blue
+			dark: "#0033CC",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F0F0F0",
+			// Light gray
+			dark: "#262626",
+			// Dark gray
+			contrastText: "#1A1A1A",
+			// Dark text
+		),
+		background: (
+			main: "#1A1A1A",
+			// Dark background
+			light: "#2D2D2D",
+			// Darker gray
+			dark: "#262626",
+			// Slightly lighter gray
+			contrastText: "#FFFFFF",
+			// White text
+		),
+		text: (
+			main: "#FFFFFF",
+			// White text
+			light: "#E0E0E0",
+			// Light gray text
+			dark: "#BDBDBD",
+			// Darker gray text
+			contrastText: "#1A1A1A",
+			// Dark background
+		),
+		warning: (
+			main: "#FFD700",
+			// Gold accent
+			light: "#FFEB3B",
+			// Lighter gold
+			dark: "#FF9800",
+			// Darker gold
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			// Fiery error red
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#599f68",
+			// Success green
+			light: "#81C784",
+			// Lighter green
+			dark: "#388E3C",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+);

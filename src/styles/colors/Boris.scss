@@ -1,0 +1,156 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FF69B4",
+			// Cotton candy pink
+			light: "#FF8FB0",
+			// Lighter pink
+			dark: "#D14B8A",
+			// Darker pink
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#87CEEB",
+			// Bubblegum blue
+			light: "#A4D9F7",
+			// Lighter blue
+			dark: "#4B90C1",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F9F9F9",
+			// Light gray
+			dark: "#E0E0E0",
+			// Slightly darker white
+			contrastText: "#FF1493",
+			// Deep pink text for contrast
+		),
+		background: (
+			main: "#FFF0F5",
+			// Soft pink
+			light: "#FCE9F3",
+			// Lighter pink
+			dark: "#F1C5D8",
+			// Darker pink
+			contrastText: "#FF1493",
+			// Deep pink text for contrast
+		),
+		text: (
+			main: "#FF1493",
+			// Deep pink
+			light: "#FF66B2",
+			// Lighter pink
+			dark: "#D10080",
+			// Darker pink
+			contrastText: "#FFF0F5",
+			// Soft pink background
+		),
+		warning: (
+			main: "#FFD700",
+			// Lemon drop
+			light: "#FFEB3B",
+			// Lighter yellow
+			dark: "#FF8C00",
+			// Darker yellow
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#9b4444",
+			// Fiery red for error
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#98FB98",
+			// Mint green
+			light: "#A7F7A7",
+			// Lighter mint green
+			dark: "#77D577",
+			// Darker mint green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FF85C2",
+			// Light pink
+			light: "#FF9BC8",
+			// Lighter pink
+			dark: "#D14B8A",
+			// Darker pink
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#A5D8F3",
+			// Light blue
+			light: "#C6E7F9",
+			// Lighter blue
+			dark: "#7BB8D4",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F9F9F9",
+			// Light gray
+			dark: "#2D2D2D",
+			// Dark gray for night mode
+			contrastText: "#FFE1EF",
+			// Light pinkish text for dark mode
+		),
+		background: (
+			main: "#2B1A24",
+			// Dark background for night mode
+			light: "#3D2433",
+			// Darker purple-pink
+			dark: "#331F2B",
+			// Deepest purple-pink
+			contrastText: "#FFE1EF",
+			// Light pinkish text on dark background
+		),
+		text: (
+			main: "#FFE1EF",
+			// Light pinkish text for dark mode
+			light: "#FFF4F7",
+			// Lighter pinkish text
+			dark: "#F1C7D5",
+			// Even darker pinkish text
+			contrastText: "#2B1A24",
+			// Dark background for contrast
+		),
+		warning: (
+			main: "#FFE44D",
+			// Lemon yellow for warning
+			light: "#FFEB8D",
+			// Lighter yellow
+			dark: "#FFB300",
+			// Darker yellow
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			// Fiery error red
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#B0FBB0",
+			// Light mint green for success
+			light: "#C6FBC6",
+			// Lighter mint green
+			dark: "#8ABF8A",
+			// Darker mint green
+			contrastText: "#fff",
+		),
+	),
+);

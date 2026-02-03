@@ -1,0 +1,139 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FF4500",
+			// Flame orange
+			light: "#FF6347",
+			// Ember red
+			dark: "#B22222",
+			// Fiery crimson
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#FF6347",
+			// Ember red
+			light: "#FF7F50",
+			// Coral warning
+			dark: "#B22222",
+			// Fiery crimson
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#FFDAB9",
+			// Soft peach
+			light: "#FFE4C4",
+			// Light beige
+			dark: "#FFE8B2",
+			contrastText: "#2B1A14",
+			// Charizard's details (dark brown)
+		),
+		background: (
+			main: "#FFF5E6",
+			// Warm cream
+			light: "#FFFFFF",
+			// Bright white
+			dark: "#FFE4C4",
+			// Light beige
+			contrastText: "#2B1A14",
+			// Charizard's details (dark brown)
+		),
+		text: (
+			main: "#2B1A14",
+			// Charizard's details (dark brown)
+			light: "#3E1F16",
+			dark: "#1B0F0A",
+			contrastText: "#fff",
+		),
+		warning: (
+			main: "#FF7F50",
+			// Coral warning
+			light: "#FF8A65",
+			// Soft orange
+			dark: "#E65C43",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#B22222",
+			// Fiery crimson
+			light: "#D24A2E",
+			dark: "#8B1A1A",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#FFD700",
+			// Golden yellow
+			light: "#FFC107",
+			// Fiery gold
+			dark: "#D8A500",
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FF5722",
+			// Brighter flame orange
+			light: "#FF6347",
+			// Ember red
+			dark: "#D43F00",
+			// Darker flame orange
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#FF6B4A",
+			// Bright ember red
+			light: "#FF8A65",
+			// Soft orange
+			dark: "#D32F2F",
+			// Dark ember red
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#FFDAB9",
+			// Warm peach
+			light: "#FFE4C4",
+			// Light beige
+			dark: "#FFE8B2",
+			contrastText: "#FFDAB9",
+			// Peach-like for readability
+		),
+		background: (
+			main: "#2B2B2B",
+			// Dark gray for Charizard's underbelly
+			light: "#3D3D3D",
+			// Darker gray
+			dark: "#333333",
+			// Smoky gray
+			contrastText: "#FFDAB9",
+			// Peach-like for readability
+		),
+		text: (
+			main: "#FFDAB9",
+			// Peach-like for readability
+			light: "#FFDBB5",
+			dark: "#A5774E",
+			contrastText: "#2B2B2B",
+			// Dark gray for Charizard's underbelly
+		),
+		warning: (
+			main: "#FF8A65",
+			// Soft orange
+			light: "#FF9F8D",
+			dark: "#D85C35",
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#f73032",
+			// Strong crimson
+			light: "#FF4D42",
+			dark: "#D1221F",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#FFC107",
+			// Fiery gold
+			light: "#FFD54F",
+			dark: "#F57C00",
+			contrastText: "#fff",
+		),
+	),
+);

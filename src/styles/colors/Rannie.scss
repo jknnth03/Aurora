@@ -1,0 +1,102 @@
+$color: (
+	light: (
+		primary: (
+			main: "#4A5568",
+			light: "#718096",
+			dark: "#2D3748",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#805AD5",
+			light: "#9F7AEA",
+			dark: "#6B46C1",
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#F7FAFC",
+			dark: "#EDF2F7",
+			contrastText: "#2D3748",
+		),
+		background: (
+			main: "#F7FAFC",
+			light: "#ffffff",
+			dark: "#EDF2F7",
+			contrastText: "#2D3748",
+		),
+		text: (
+			main: "#2D3748",
+			light: "#4A5568",
+			dark: "#1A202C",
+			contrastText: "#fff",
+		),
+		warning: (
+			main: "#F2C354",
+			light: "#F9DC87",
+			dark: "#D9AD41",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#9b4444",
+			light: "#C76A6A",
+			dark: "#7A3232",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#2e7d32",
+			light: "#5BAF5E",
+			dark: "#1C5420",
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#805AD5",
+			light: "#9F7AEA",
+			dark: "#6B46C1",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#6B46C1",
+			light: "#7F4FDF",
+			dark: "#4A3691",
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#FAFAFA",
+			dark: "#E2E8F0",
+			contrastText: "#1A202C",
+		),
+		background: (
+			main: "#1A202C",
+			light: "#2D3748",
+			dark: "#242A38",
+			contrastText: "#E2E8F0",
+		),
+		text: (
+			main: "#E2E8F0",
+			light: "#F5F5F5",
+			dark: "#C0BEC5",
+			contrastText: "#000",
+		),
+		warning: (
+			main: "#F2C354",
+			light: "#F9DC87",
+			dark: "#D9AD41",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#d24545",
+			light: "#E57373",
+			dark: "#B71C1C",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#599f68",
+			light: "#7BC889",
+			dark: "#3B7149",
+			contrastText: "#fff",
+		),
+	),
+);

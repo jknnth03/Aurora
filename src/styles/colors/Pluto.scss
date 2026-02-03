@@ -1,0 +1,116 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FFB700",
+			// Pluto gold
+			light: "#FFCA4F",
+			dark: "#B57A00",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#8B4513",
+			// Brown accent
+			light: "#A15C37",
+			dark: "#5A2C0C",
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#FFFAF0",
+			// Warm cream
+			dark: "#FFF5E6",
+			contrastText: "#5C3A1D",
+			// Deep brown
+		),
+		background: (
+			main: "#FFFAF0",
+			// Warm cream
+			light: "#ffffff",
+			dark: "#FFF5E6",
+			contrastText: "#5C3A1D",
+			// Deep brown
+		),
+		text: (
+			main: "#5C3A1D",
+			// Deep brown
+			light: "#7C4F29",
+			dark: "#3D220C",
+			contrastText: "#fff",
+		),
+		warning: (
+			main: "#F2C354",
+			light: "#F9DC87",
+			dark: "#D9AD41",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#9b4444",
+			light: "#C76A6A",
+			dark: "#7A3232",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#2e7d32",
+			light: "#5BAF5E",
+			dark: "#1C5420",
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FFD700",
+			// Brighter gold
+			light: "#FFE066",
+			dark: "#B28C00",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#A0522D",
+			// Lighter brown
+			light: "#C8754F",
+			dark: "#6D3F2F",
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#FFFAF0",
+			dark: "#FFE5CC",
+			// Warm light
+			contrastText: "#2A1810",
+			// Deep warm brown
+		),
+		background: (
+			main: "#2A1810",
+			// Deep warm brown
+			light: "#3D251A",
+			dark: "#332016",
+			contrastText: "#FFE5CC",
+		),
+		text: (
+			main: "#FFE5CC",
+			// Warm light
+			light: "#FFCE9F",
+			dark: "#C4A174",
+			contrastText: "#2A1810",
+			// Deep warm brown
+		),
+		warning: (
+			main: "#F2C354",
+			light: "#F9DC87",
+			dark: "#D9AD41",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#d24545",
+			light: "#E57373",
+			dark: "#B71C1C",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#599f68",
+			light: "#7BC889",
+			dark: "#3B7149",
+			contrastText: "#fff",
+		),
+	),
+);

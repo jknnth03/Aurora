@@ -1,0 +1,483 @@
+@use "../../../styles/__keyframes.scss";
+@use "../../../styles/_mixins.scss" as *;
+// Variables for easier maintenance
+$sidebar-expanded-width: 325px;
+$sidebar-collapsed-width: 64px;
+$transition-duration: 0.3s;
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+$primary-color: var(--mui-palette-primary-main);
+$hover-bg: rgba(224, 114, 24, 0.082);
+$main-bg: var(--mui-palette-background-default);
+$active-bg: rgba($primary-color, 0.12);
+$border-radius: 8px;
+$item-height: 48px;
+$icon-size: 24px;
+$line-color: rgb(209, 209, 209);
+$line-width: 2px;
+$curve-radius: 10px; // Radius for the curved corners
+
+// Main sidebar container
+.sidebar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 4;
+  border-right: 1px solid var(--mui-palette-FilledInput-bg);
+  transition: width $transition-duration $transition-timing,
+    background-color 0.3s ease;
+  background-color: var(--mui-palette-background-default);
+  will-change: width;
+
+  @include md {
+    position: absolute;
+    box-shadow: 9px 0px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  // Expanded state
+  &--true {
+    width: $sidebar-expanded-width;
+  }
+
+  // Collapsed state
+  &--false {
+    width: $sidebar-collapsed-width;
+
+    .sidebar__collapse {
+      height: 0 !important;
+      overflow: hidden;
+    }
+    @include md {
+      width: 0;
+    }
+  }
+
+  // Header section
+  &__header {
+    max-height: 50px;
+    height: 50px;
+    padding: 0 8px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    // border-bottom: 1px solid var(--mui-palette-FilledInput-bg);
+  }
+
+  &__header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &__header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+
+    svg {
+      transition: all $transition-duration ease;
+    }
+  }
+
+  &__title {
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity $transition-duration ease;
+
+    .sidebar--false & {
+      opacity: 0;
+    }
+  }
+
+  // Content section
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
+    position: relative;
+
+    // Scrollbar styling
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+    }
+  }
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  // Active background element for main menu
+  &__active-bg {
+    position: absolute;
+    left: 0;
+    height: $item-height;
+    width: 100%;
+    border-radius: $border-radius;
+    background-color: $active-bg;
+    z-index: 0;
+    transition: transform 0.5s $transition-timing;
+    opacity: 0;
+    pointer-events: none; // Ensures clicks pass through
+  }
+
+  // Active background element for submenu
+  &__active-sub-bg {
+    position: absolute;
+    left: 0;
+    height: 40px; // Submenu item height
+    width: 100%;
+    border-radius: $border-radius;
+    background-color: $active-bg;
+    z-index: 0;
+    transition: transform 0.5s $transition-timing;
+    opacity: 0;
+    pointer-events: none; // Ensures clicks pass through
+  }
+
+  // Menu item styling
+  &__menu-item {
+    height: $item-height;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    position: relative;
+    transition: all $transition-duration ease;
+    cursor: pointer;
+    z-index: 200; // Above the moving background
+
+    // Common container for consistent positioning of items
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: -1;
+      transition: background-color $transition-duration ease;
+      border-radius: $border-radius;
+    }
+
+    // Hover effect
+    &:hover:not(&--active)::before {
+      background-color: $hover-bg;
+      & .sidebar__menu-icon {
+        color: $primary-color;
+        fill: $primary-color;
+        stroke: $primary-color;
+      }
+    }
+
+    // Active state
+    &--active {
+      font-weight: 500;
+
+      &::before {
+        background-color: $hover-bg;
+      }
+
+      .sidebar__menu-icon {
+        color: $primary-color;
+        fill: $primary-color;
+        stroke: $primary-color;
+        svg {
+          color: $primary-color;
+          fill: $primary-color;
+          stroke: $primary-color;
+        }
+      }
+
+      .sidebar__menu-text {
+        color: $primary-color;
+      }
+    }
+  }
+
+  &__menu-icon {
+    min-width: fit-content;
+    height: $icon-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 1.25rem;
+    color: rgba(0, 0, 0, 0.6);
+    padding-left: 14px;
+    padding-right: 16px;
+    transition: all $transition-duration ease,
+      transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      padding $transition-duration $transition-timing;
+
+    .sidebar__menu-item:hover & {
+      animation: crown-bounce 0.5s ease 10;
+      transform: scale(1.1);
+    }
+
+    // Instead of moving icons around, we adjust their padding
+    .sidebar--false & {
+      padding-left: 14px;
+      padding-right: 0;
+    }
+
+    .sidebar--true & {
+      padding-left: 14px;
+      padding-right: 16px;
+    }
+  }
+
+  &__menu-text {
+    position: relative;
+    flex: 1;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity $transition-duration ease,
+      color $transition-duration ease, max-width $transition-duration ease,
+      transform $transition-duration ease;
+    max-width: calc(
+      $sidebar-expanded-width - 24px - $icon-size - 32px
+    ); // account for padding and icon
+    transform-origin: left center;
+
+    // Text animation when expanding/collapsing
+    .sidebar--false & {
+      opacity: 0;
+      max-width: 0;
+      transform: translateX(-20px);
+    }
+
+    .sidebar--true & {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  &__menu-toggle {
+    position: absolute;
+    right: 1rem;
+    transition: transform $transition-duration
+        cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      opacity $transition-duration ease, margin $transition-duration ease;
+    opacity: 0.7;
+    margin-left: 8px;
+
+    &[data-expanded="true"] {
+      transform: rotate(180deg);
+    }
+
+    .sidebar--false & {
+      opacity: 0;
+      margin-left: -20px;
+    }
+  }
+
+  // Collapse section
+  &__collapse {
+    transition: height $transition-duration $transition-timing;
+    will-change: height;
+    overflow: hidden;
+    margin-left: 24px;
+    position: relative;
+  }
+
+  &__submenu {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    // gap: 6px;
+    padding: 6px 0 6px 12px;
+    position: relative;
+
+    // Remove the original vertical line
+    &::before {
+      content: none;
+    }
+
+    // Create a new container for the vertical line with proper positioning
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 36px;
+      left: 0;
+      width: 1px;
+      background-color: $line-color;
+      z-index: 0;
+    }
+  }
+  &__submenu-text {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__submenu-item {
+    height: 40px;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+
+    // Remove original horizontal connector
+    &::before {
+      content: none;
+    }
+
+    // Create new curved connector with border-radius
+    &::after {
+      content: "";
+      position: absolute;
+      left: -12px;
+      width: 18px; // Width of horizontal part
+      height: 12px; // Height to position properly
+      border-bottom-left-radius: $curve-radius;
+      border-left: 1px solid $line-color;
+      border-bottom: 1px solid $line-color;
+      top: 40%;
+      margin-top: -6px; // Half the height to center it
+      background-color: transparent;
+      box-sizing: border-box;
+    }
+
+    &:hover:not(&--active) {
+      font-weight: 500;
+      color: $primary-color;
+
+      svg {
+        fill: $primary-color;
+      }
+
+      &::after {
+      }
+    }
+
+    // Active submenu item
+    &--active {
+      .sidebar__submenu-icon {
+        svg {
+          color: $primary-color;
+          fill: $primary-color;
+        }
+      }
+
+      .sidebar__submenu-text {
+        color: $primary-color;
+        font-weight: 500;
+      }
+      .sidebar__last-visit {
+        display: none;
+      }
+      // Style the active curved connector
+      &::after {
+        border-color: $primary-color;
+        border-width: $line-width;
+      }
+
+      // Add active vertical line for the selected item
+      &::before {
+        content: "";
+        position: absolute;
+        top: -100000%;
+        bottom: 70%;
+        left: -12px;
+        width: $line-width;
+        background-color: $primary-color;
+        z-index: 1;
+      }
+    }
+  }
+
+  &__submenu-icon {
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.5);
+    transition: all $transition-duration ease;
+
+    .sidebar__submenu-item:hover & {
+      transform: scale(1.1);
+    }
+    svg {
+      fill: var(--mui-palette-text-secondary);
+    }
+  }
+
+  &__submenu-text {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all $transition-duration ease;
+  }
+
+  // Footer section
+  &__footer {
+    max-height: 50px;
+    display: flex;
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    // border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 4px;
+    margin-top: auto;
+    border-top: 1px solid var(--mui-palette-FilledInput-bg);
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// Animation for tooltips
+.MuiTooltip-tooltip {
+  transition: opacity $transition-duration ease,
+    transform $transition-duration ease;
+  font-size: 0.8rem;
+}
+
+.drawer-trigger {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  z-index: 10;
+  transition: all $transition-duration ease;
+  display: none;
+  @include md {
+    display: flex;
+  }
+  &:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}

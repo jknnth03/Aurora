@@ -1,0 +1,156 @@
+$color: (
+	light: (
+		primary: (
+			main: "#9B26B6",
+			// Joker purple
+			light: "#AE59D3",
+			// Lighter purple
+			dark: "#7A1B8F",
+			// Darker purple
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#2ECC71",
+			// Joker green
+			light: "#48E09A",
+			// Lighter green
+			dark: "#28A745",
+			// Darker green
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F5F5F5",
+			// Light gray
+			dark: "#E5E5E5",
+			// Darker gray
+			contrastText: "#2C3E50",
+			// Dark text
+		),
+		background: (
+			main: "#FAF5FF",
+			// Soft light purple
+			light: "#F5FFF7",
+			// Light green tint background
+			dark: "#EDE7F6",
+			// Lighter purple tint
+			contrastText: "#2C3E50",
+			// Dark text
+		),
+		text: (
+			main: "#2C3E50",
+			// Dark text
+			light: "#BDC3C7",
+			// Light gray text
+			dark: "#000000",
+			// Black text
+			contrastText: "#FAF5FF",
+			// Light purple background
+		),
+		warning: (
+			main: "#FF6B6B",
+			// Soft red for warning
+			light: "#FF8A8A",
+			// Lighter warning red
+			dark: "#F44336",
+			// Darker red
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#9b4444",
+			// Fiery red for error
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#2ECC71",
+			// Success green
+			light: "#48E09A",
+			// Lighter green
+			dark: "#28A745",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#B92ED7",
+			// Brighter Joker purple
+			light: "#D27DFF",
+			// Lighter purple
+			dark: "#7A1B8F",
+			// Darker purple
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#33E67D",
+			// Brighter Joker green
+			light: "#59FF9A",
+			// Lighter green
+			dark: "#28A745",
+			// Darker green
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F5F5F5",
+			// Light gray
+			dark: "#241529",
+			// Darker background
+			contrastText: "#F8E1FF",
+			// Soft light purple text
+		),
+		background: (
+			main: "#1A0F1F",
+			// Dark purple background
+			light: "#2D1A33",
+			// Darker purple gray
+			dark: "#241529",
+			// Deep maroon
+			contrastText: "#F8E1FF",
+			// Soft light purple
+		),
+		text: (
+			main: "#F8E1FF",
+			// Soft light purple text
+			light: "#E0B2FF",
+			// Lighter purple text
+			dark: "#B87CFF",
+			// Darker purple text
+			contrastText: "#1A0F1F",
+			// Dark background
+		),
+		warning: (
+			main: "#FF8080",
+			// Bright warning red
+			light: "#FFB3B3",
+			// Lighter warning red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			// Fiery error red
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#33E67D",
+			// Success green
+			light: "#59FF9A",
+			// Lighter green
+			dark: "#28A745",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+);

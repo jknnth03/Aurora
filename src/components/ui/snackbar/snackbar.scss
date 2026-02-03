@@ -1,0 +1,99 @@
+@use "../../../styles/__keyframes.scss";
+// Variables
+$alphaValue: 1;
+$icon-margin: 0.5rem;
+
+// Icon base styles and animations
+.snack-icon {
+	margin-right: $icon-margin;
+
+	&.success-icon {
+		animation: crown-bounce 1s ease infinite;
+	}
+
+	&.error-icon {
+		animation: bomb-shake 0.8s ease-in-out infinite;
+	}
+
+	&.info-icon {
+		animation: wave 2s ease infinite;
+		transform-origin: bottom right;
+	}
+
+	&.warning-icon {
+		animation: alien-scary 2s ease-in-out infinite;
+	}
+}
+
+// Snackbar styling
+.notistack-MuiContent-root {
+	border-radius: 20px;
+	padding-right: 30px;
+
+	// Close button styling
+	.MuiIconButton-root {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		padding: 2px;
+		transition: transform 0.2s ease;
+
+		&:hover {
+			transform: scale(1.1);
+		}
+	}
+}
+
+.dismissed-action {
+	position: absolute;
+	display: flex;
+	pointer-events: none;
+	left: 0;
+	top: 0;
+	min-width: 100%;
+	min-height: 100%;
+	justify-content: flex-end;
+
+	&__icon-btn {
+		pointer-events: auto;
+		position: relative;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		&.MuiIconButton-root {
+			margin-left: 1rem;
+		}
+	}
+	&__circle-progress {
+		position: absolute;
+		color: var(--text-dark);
+	}
+	& .MuiCircularProgress-circle {
+		stroke-linecap: round;
+	}
+	&__close-icon {
+		position: relative;
+		z-index: 1;
+	}
+}
+
+// // Variant specific styling
+// .notistack-MuiContent-default {
+// 	background-color: rgba(var(--grey-700), $alphaValue);
+// }
+
+// .notistack-MuiContent-success {
+// 	background-color: rgba(var(--success-light), $alphaValue);
+// }
+
+// .notistack-MuiContent-error {
+// 	background-color: rgba(var(--error-light), $alphaValue);
+// }
+
+// .notistack-MuiContent-warning {
+// 	background-color: rgba(var(--warning-light), $alphaValue);
+// }
+
+// .notistack-MuiContent-info {
+// 	background-color: rgba(var(--info-light), $alphaValue);
+// }

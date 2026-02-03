@@ -1,0 +1,87 @@
+// Icon animations for SnackProvider
+// Using underscore prefix as this is a partial SCSS file
+
+@keyframes crown-bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-5px);
+	}
+}
+
+@keyframes bomb-shake {
+	0%,
+	100% {
+		transform: rotate(0);
+	}
+	10%,
+	30%,
+	50%,
+	70%,
+	90% {
+		transform: rotate(-5deg);
+	}
+	20%,
+	40%,
+	60%,
+	80% {
+		transform: rotate(5deg);
+	}
+}
+
+@keyframes wave {
+	0% {
+		transform: rotate(0);
+	}
+	10% {
+		transform: rotate(-10deg);
+	}
+	20% {
+		transform: rotate(12deg);
+	}
+	30% {
+		transform: rotate(-10deg);
+	}
+	40% {
+		transform: rotate(9deg);
+	}
+	50% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(0);
+	}
+}
+
+@keyframes alien-pulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 0.8;
+	}
+}
+@keyframes alien-scary {
+	0%,
+	100% {
+		transform: scale(1) rotate(0);
+		filter: brightness(1);
+	}
+	25% {
+		transform: scale(1.1) rotate(-3deg);
+		filter: brightness(1.3);
+	}
+	50% {
+		transform: scale(0.95) rotate(3deg);
+		filter: brightness(0.9);
+	}
+	75% {
+		transform: scale(1.2) rotate(-2deg);
+		filter: brightness(1.2);
+	}
+}

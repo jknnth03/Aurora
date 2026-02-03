@@ -1,0 +1,133 @@
+//FYI WHEN DOING COLORS - USE THE SAME FILENAME AS TO THE VARIABLE. E.G FILENAME: _Pink.scss variable $Pink
+//! FOLLOW THE SAME CONVENTION
+
+$color: (
+	light: (
+		primary: (
+			main: "#4c5324",
+			light: "#a4c433",
+			dark: "#3b4200",
+			contrastText: "#ffffff",
+		),
+		secondary: (
+			main: "#007bff",
+			light: "#6cb2eb",
+			dark: "#0056b3",
+			contrastText: "#ffffff",
+		),
+		error: (
+			main: "#dc3545",
+			light: "#f86c73",
+			dark: "#bd2130",
+			contrastText: "#ffffff",
+		),
+		warning: (
+			main: "#ffc107",
+			light: "#ffcf39",
+			dark: "#ffa726",
+			contrastText: "#000000",
+		),
+		info: (
+			main: "#17a2b8",
+			light: "#5bc0de",
+			dark: "#138496",
+			contrastText: "#ffffff",
+		),
+		success: (
+			main: "#28a745",
+			light: "#40c057",
+			dark: "#1e7e34",
+			contrastText: "#ffffff",
+		),
+		background: (
+			main: "#f3ede4",
+			light: "#ffffff",
+			dark: "#e9ecef",
+			contrastText: "#000000",
+		),
+
+		text: (
+			main: "#212529",
+			light: "#495057",
+			dark: "#1b1e21",
+			contrastText: "#ffffff",
+		),
+		tertiary: (
+			main: "#6f42c1",
+			light: "#8a62d4",
+			dark: "#563d7c",
+			contrastText: "#ffffff",
+		),
+		caution: (
+			main: "#ffc107",
+			light: "#ffcf39",
+			dark: "#ffa726",
+			contrastText: "#000000",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#a4c433",
+			light: "#c0de6b",
+			dark: "#8cb326",
+			contrastText: "#ffffff",
+		),
+		secondary: (
+			main: "#1976d2",
+			light: "#42a5f5",
+			dark: "#1565c0",
+			contrastText: "#ffffff",
+		),
+		error: (
+			main: "#cf6679",
+			light: "#ff8a80",
+			dark: "#b00020",
+			contrastText: "#000",
+		),
+		warning: (
+			main: "#ffb300",
+			light: "#ffc700",
+			dark: "#ff8f00",
+			contrastText: "#000",
+		),
+		info: (
+			main: "#03a9f4",
+			light: "#29b6f6",
+			dark: "#0288d1",
+			contrastText: "#000",
+		),
+		success: (
+			main: "#66bb6a",
+			light: "#81c784",
+			dark: "#388e3c",
+			contrastText: "#000",
+		),
+		background: (
+			main: "#252525",
+
+			light: "#373938",
+
+			dark: "#1a1a1a",
+
+			contrastText: "#ffffff",
+		),
+		text: (
+			main: "#ffffff",
+			light: "#cfcfcf",
+			dark: "#e0e0e0",
+			contrastText: "#000",
+		),
+		tertiary: (
+			main: "#bb86fc",
+			light: "#d7b7fe",
+			dark: "#9c27b0",
+			contrastText: "#000",
+		),
+		caution: (
+			main: "#ff9800",
+			light: "#ffb74d",
+			dark: "#f57c00",
+			contrastText: "#000",
+		),
+	),
+);

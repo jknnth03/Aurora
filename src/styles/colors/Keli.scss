@@ -1,0 +1,105 @@
+//FYI WHEN DOING COLORS - USE THE SAME FILENAME AS TO THE VARIABLE. E.G FILENAME: _Pink.scss variable $Pink
+//! FOLLOW THE SAME CONVENTION
+
+$color: (
+	light: (
+		primary: (
+			main: "#af3327",
+			light: "#d45547",
+			dark: "#8c271d",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#81b4b4",
+			light: "#a6cfcf",
+			dark: "#5a9090",
+			contrastText: "#000",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#efe2d9",
+			dark: "#e8d9d0",
+			contrastText: "#64231f",
+		),
+		background: (
+			main: "#efe2d9",
+			light: "#ffffff",
+			dark: "#e8d9d0",
+			contrastText: "#64231f",
+		),
+		text: (
+			main: "#64231f",
+			light: "#7a332d",
+			dark: "#4e1a17",
+			contrastText: "#fff",
+		),
+		warning: (
+			main: "#F2C354",
+			light: "#F9DC87",
+			dark: "#D9AD41",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#9b4444",
+			light: "#C76A6A",
+			dark: "#7A3232",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#81b4b4",
+			light: "#a6cfcf",
+			dark: "#5a9090",
+			contrastText: "#000",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#df966b",
+			light: "#f0b891",
+			dark: "#c47a50",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#81b4b4",
+			light: "#a6cfcf",
+			dark: "#5a9090",
+			contrastText: "#000",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#efe2d9",
+			dark: "#c9b8ad",
+			contrastText: "#2b1613",
+		),
+		background: (
+			main: "#2b1613",
+			light: "#3d1f1a",
+			dark: "#331a16",
+			contrastText: "#efe2d9",
+		),
+		text: (
+			main: "#efe2d9",
+			light: "#f7ece5",
+			dark: "#c9b8ad",
+			contrastText: "#000",
+		),
+		warning: (
+			main: "#F2C354",
+			light: "#F9DC87",
+			dark: "#D9AD41",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#d24545",
+			light: "#E57373",
+			dark: "#B71C1C",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#81b4b4",
+			light: "#a6cfcf",
+			dark: "#5a9090",
+			contrastText: "#000",
+		),
+	),
+);

@@ -1,0 +1,156 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FF0000",
+			// Mario red
+			light: "#FF4D4D",
+			// Lighter Mario red
+			dark: "#B30000",
+			// Darker Mario red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#4A90E2",
+			// Mario blue
+			light: "#66B2FF",
+			// Lighter blue
+			dark: "#3A78B6",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F9F9F9",
+			// Light gray
+			dark: "#E0E0E0",
+			// Slightly darker white
+			contrastText: "#4A3500",
+			// Brown text for contrast
+		),
+		background: (
+			main: "#FFF8E1",
+			// Coin yellow tint
+			light: "#FFF4D4",
+			// Lighter yellow tint
+			dark: "#F2E4A1",
+			// Darker yellow
+			contrastText: "#4A3500",
+			// Brown text for contrast
+		),
+		text: (
+			main: "#4A3500",
+			// Brown like blocks
+			light: "#7F5F2A",
+			// Lighter brown
+			dark: "#2D1A10",
+			// Dark brown
+			contrastText: "#FFF8E1",
+			// Coin yellow tint background
+		),
+		warning: (
+			main: "#FFC107",
+			// Star yellow
+			light: "#FFD54F",
+			// Lighter yellow
+			dark: "#FF9800",
+			// Darker yellow
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#9b4444",
+			// Fiery red for error
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#4CAF50",
+			// Pipe green
+			light: "#66BB6A",
+			// Lighter green
+			dark: "#388E3C",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FF4040",
+			// Brighter Mario red
+			light: "#FF6666",
+			// Lighter Mario red
+			dark: "#B30000",
+			// Darker Mario red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#5DA0E2",
+			// Mario blue
+			light: "#7BB8F1",
+			// Lighter blue
+			dark: "#3A78B6",
+			// Darker blue
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F9F9F9",
+			// Light gray
+			dark: "#2D2D2D",
+			// Dark gray for night mode
+			contrastText: "#FFE0A3",
+			// Yellowish text for dark mode
+		),
+		background: (
+			main: "#1A1A1A",
+			// Dark background for night mode
+			light: "#2D2D2D",
+			// Darker gray for night mode
+			dark: "#262626",
+			// Deeper gray
+			contrastText: "#FFE0A3",
+			// Light text on dark background
+		),
+		text: (
+			main: "#FFE0A3",
+			// Light yellow text for dark mode
+			light: "#FFF8C6",
+			// Lighter yellow text
+			dark: "#F1D269",
+			// Even darker yellow for text
+			contrastText: "#1A1A1A",
+			// Dark background for contrast
+		),
+		warning: (
+			main: "#FFD700",
+			// Gold for warning
+			light: "#FFEB3B",
+			// Lighter gold
+			dark: "#FF8F00",
+			// Darker gold
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			// Fiery error red
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#5DBF61",
+			// Bright success green
+			light: "#7CBF70",
+			// Lighter success green
+			dark: "#388E3C",
+			// Darker success green
+			contrastText: "#fff",
+		),
+	),
+);

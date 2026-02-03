@@ -1,0 +1,268 @@
+// Simplified SCSS for the info sidebar
+// Importing variables and keyframes from your existing styles
+@use "../../styles/__keyframes.scss";
+
+// Variables for easier maintenance
+$sidebar-expanded-width: 250px;
+$sidebar-collapsed-width: 64px;
+$transition-duration: 0.3s;
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+$primary-color: var(--mui-palette-primary-main);
+$hover-bg: rgba(224, 114, 24, 0.082);
+$main-bg: var(--mui-palette-background-default);
+$active-bg: rgba($primary-color, 0.12);
+$border-radius: 8px;
+$item-height: 48px;
+$icon-size: 24px;
+
+// Main sidebar container
+.info-sidebar {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+	position: relative;
+	border-right: 1px solid var(--mui-palette-FilledInput-bg);
+	transition: width $transition-duration $transition-timing;
+	background-color: rgba(255, 237, 222, 0.082);
+	will-change: width;
+
+	// Expanded state
+	&--true {
+		width: $sidebar-expanded-width;
+	}
+
+	// Collapsed state
+	&--false {
+		width: $sidebar-collapsed-width;
+	}
+
+	// Header section
+	&__header {
+		height: 64px;
+		padding: 0 8px;
+		margin-bottom: 16px;
+		display: flex;
+		align-items: center;
+		position: relative;
+		z-index: 2;
+	}
+
+	&__header-content {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 0 8px;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	&__header-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 32px;
+		height: 32px;
+
+		span {
+			font-size: 20px;
+			transition: all $transition-duration ease;
+		}
+	}
+
+	&__title {
+		white-space: nowrap;
+		overflow: hidden;
+		transition: opacity $transition-duration ease;
+
+		.sidebar--false & {
+			opacity: 0;
+		}
+	}
+
+	// Content section
+	&__content {
+		flex: 1;
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding: 8px;
+		position: relative;
+
+		// Scrollbar styling
+		&::-webkit-scrollbar {
+			width: 4px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 0, 0, 0.15);
+			border-radius: 10px;
+		}
+	}
+
+	&__menu {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		position: relative;
+	}
+
+	// Active background element for main menu
+	&__active-bg {
+		position: absolute;
+		left: 0;
+		height: $item-height;
+		width: 100%;
+		border-radius: $border-radius;
+		background-color: $active-bg;
+		z-index: 0;
+		transition: transform 0.5s $transition-timing;
+		opacity: 0;
+		pointer-events: none; // Ensures clicks pass through
+	}
+
+	// Menu item styling
+	&__menu-item {
+		height: $item-height;
+		border-radius: $border-radius;
+		display: flex;
+		align-items: center;
+		padding: 0;
+		position: relative;
+		transition: all $transition-duration ease;
+		cursor: pointer;
+		z-index: 200; // Above the moving background
+
+		// Common container for consistent positioning of items
+		&::before {
+			content: "";
+			display: block;
+			width: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			z-index: -1;
+			transition: background-color $transition-duration ease;
+			border-radius: $border-radius;
+		}
+
+		// Hover effect
+		&:hover:not(&--active)::before {
+			background-color: $hover-bg;
+		}
+
+		// Active state
+		&--active {
+			font-weight: 500;
+
+			&::before {
+				background-color: $hover-bg;
+			}
+
+			.sidebar__menu-icon {
+				color: $primary-color;
+
+				span {
+					color: $primary-color;
+				}
+			}
+
+			.sidebar__menu-text {
+				color: $primary-color;
+			}
+		}
+	}
+
+	&__menu-icon {
+		min-width: fit-content;
+		height: $icon-size;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		color: rgba(0, 0, 0, 0.6);
+		padding-left: 14px;
+		padding-right: 16px;
+		transition: all $transition-duration ease;
+
+		span {
+			font-size: 16px;
+			font-weight: 500;
+			transition: color $transition-duration ease;
+		}
+
+		.sidebar__menu-item:hover & {
+			transform: scale(1.1);
+		}
+	}
+
+	&__menu-text {
+		position: relative;
+		flex: 1;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		transition: opacity $transition-duration ease, color $transition-duration ease,
+			max-width $transition-duration ease, transform $transition-duration ease;
+		max-width: calc($sidebar-expanded-width - 24px - $icon-size - 32px); // account for padding and icon
+		transform-origin: left center;
+
+		// Text animation when expanding/collapsing
+		.sidebar--false & {
+			opacity: 0;
+			max-width: 0;
+			transform: translateX(-20px);
+		}
+
+		.sidebar--true & {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	// Footer section
+	&__footer {
+		min-height: 50px;
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: center;
+		padding: 4px;
+		margin-top: auto;
+		position: relative;
+		z-index: 2;
+	}
+}
+
+// Animation for tooltips
+.MuiTooltip-tooltip {
+	transition: opacity $transition-duration ease, transform $transition-duration ease;
+	font-size: 0.8rem;
+}
+
+.info-drawer-trigger {
+	position: absolute;
+	top: 12px;
+	right: -12px;
+	z-index: 10;
+	transition: all $transition-duration ease;
+	opacity: 0.7;
+	background-color: white;
+	border-radius: 50%;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+
+	&:hover {
+		opacity: 1;
+		transform: scale(1.05);
+	}
+}

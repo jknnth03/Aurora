@@ -1,0 +1,166 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FFD700",
+			// Royal gold
+			light: "#FFF5B7",
+			// Soft gold glow
+			dark: "#B8860B",
+			// Darker gold for depth
+			contrastText: "#2A2A2A",
+			// Darker text for better contrast
+		),
+		secondary: (
+			main: "#C5A900",
+			// Noble golden yellow
+			light: "#F2E08C",
+			// Soft yellow
+			dark: "#8B6F00",
+			// Deep gold
+			contrastText: "#2A2A2A",
+			// Dark text for elegance
+		),
+		tertiary: (
+			main: "#fff",
+			// Pure white for refined backgrounds
+			light: "#F8F8F8",
+			// Soft off-white
+			dark: "#D9D9D9",
+			// Light gray for texture
+			contrastText: "#2A2A2A",
+			// Elegant dark text
+		),
+		background: (
+			main: "#F9F2E7",
+			// Light golden parchment
+			light: "#F5E3A6",
+			// Lighter gold accents
+			dark: "#D9B86D",
+			// Subtle darker golden undertone
+			contrastText: "#2A2A2A",
+			// Contrast for readability
+		),
+		text: (
+			main: "#800080",
+			// Purple text for nobility
+			light: "#9B59B6",
+			// Lighter purple for softer text
+			dark: "#6A0DAD",
+			// Dark purple for emphasis
+			contrastText: "#FFD700",
+			// Yellow for contrast highlights
+		),
+		warning: (
+			main: "#FF8C00",
+			// Bright golden orange for emphasis
+			light: "#FFB74D",
+			// Light orange for subtle highlights
+			dark: "#D67300",
+			// Darker shade for depth
+			contrastText: "#2A2A2A",
+			// Dark text for warning
+		),
+		error: (
+			main: "#8B0000",
+			// Regal dark red for error
+			light: "#D44D4D",
+			// Light crimson red for warning
+			dark: "#660000",
+			// Deep red for severe errors
+			contrastText: "#fff",
+			// White for contrast
+		),
+		success: (
+			main: "#6B8E23",
+			// Olive green for success, noble and calming
+			light: "#98FB98",
+			// Lighter mint green for highlights
+			dark: "#4B6F2B",
+			// Dark green for strength
+			contrastText: "#2A2A2A",
+			// Dark text for success
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FFD700",
+			// Royal gold for richness
+			light: "#FFF5B7",
+			// Glowing gold
+			dark: "#B8860B",
+			// Darker gold for luxury
+			contrastText: "#2A2A2A",
+			// Dark text for contrast
+		),
+		secondary: (
+			main: "#C5A900",
+			// Noble gold
+			light: "#F2E08C",
+			// Soft yellow for prestige
+			dark: "#8B6F00",
+			// Dark gold for emphasis
+			contrastText: "#2A2A2A",
+			// Dark contrast text
+		),
+		tertiary: (
+			main: "#fff",
+			// Pure white for luxurious backdrops
+			light: "#F5F5F5",
+			// Slight off-white
+			dark: "#D9D9D9",
+			// Light gray
+			contrastText: "#2A2A2A",
+			// Dark text for clarity
+		),
+		background: (
+			main: "#B69A42",
+			// Darker yellowish background
+			light: "#D9B86D",
+			// Still some gold undertones
+			dark: "#8B6F00",
+			// Deep golden yellow
+			contrastText: "#2A2A2A",
+			// Dark text for readability
+		),
+		text: (
+			main: "#340f57",
+			// Lighter purple for better contrast
+			light: "#4f1f7d",
+			// Lighter purple for softer text
+			dark: "#67309a",
+			// Dark purple for emphasis
+			contrastText: "#FFD700",
+			// Yellow for high contrast
+		),
+		warning: (
+			main: "#FF8C00",
+			// Bold gold accent for warning
+			light: "#FFB74D",
+			// Lighter orange for highlights
+			dark: "#D67300",
+			// Deeper shade for warning
+			contrastText: "#2A2A2A",
+			// Dark text for clarity
+		),
+		error: (
+			main: "#8B0000",
+			// Dark red for serious errors
+			light: "#D44D4D",
+			// Lighter red for less critical errors
+			dark: "#660000",
+			// Deep red for error depth
+			contrastText: "#fff",
+			// White contrast
+		),
+		success: (
+			main: "#6B8E23",
+			// Olive green for success with a noble touch
+			light: "#98FB98",
+			// Lighter green for success highlights
+			dark: "#4B6F2B",
+			// Dark green for stability
+			contrastText: "#2A2A2A",
+			// Dark text for readability
+		),
+	),
+);

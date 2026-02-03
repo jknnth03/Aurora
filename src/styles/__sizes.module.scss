@@ -1,0 +1,82 @@
+/* Define SCSS variables */
+$s: 8px;
+
+$s-1: $s * 1;
+$s-2: $s * 2;
+$s-3: $s * 3;
+$s-4: $s * 4;
+$s-5: $s * 5;
+$s-6: $s * 6;
+$s-7: $s * 7;
+$s-8: $s * 8;
+$s-9: $s * 9;
+$s-10: $s * 10;
+
+@function s($number) {
+	@return $s * $number;
+}
+
+// fs means font size
+$fs-xs: 12px;
+$fs-sm: 14px;
+$fs-md: 16px;
+$fs-lg: 18px;
+$fs-xl: 24px;
+$fs-xxl: 32px;
+
+// lh means lineheight
+$lh-xs: 1.5;
+$lh-sm: 1.5;
+$lh-md: 1.5;
+$lh-lg: 1.5;
+$lh-xl: 1.5;
+$lh-xxl: 1.5;
+
+//fw means font weight
+$fw-regular: 400;
+$fw-bold: 700;
+
+//ls means letter spacing
+$ls-xs: 0;
+$ls-sm: 0.5px;
+$ls-md: 1px;
+$ls-lg: 1.5px;
+$ls-xl: 2px;
+
+/* Export the SCSS variables as CSS custom properties */
+:root {
+	--s: #{$s};
+	--s-1: #{$s-1};
+	--s-2: #{$s-2};
+	--s-3: #{$s-3};
+	--s-4: #{$s-4};
+	--s-5: #{$s-5};
+	--s-6: #{$s-6};
+	--s-7: #{$s-7};
+	--s-8: #{$s-8};
+	--s-9: #{$s-9};
+	--s-10: #{$s-10};
+
+	--fs-xs: #{$fs-xs};
+	--fs-sm: #{$fs-sm};
+	--fs-md: #{$fs-md};
+	--fs-lg: #{$fs-lg};
+	--fs-xl: #{$fs-xl};
+	--fs-xxl: #{$fs-xxl};
+
+	--lh-xs: #{$lh-xs};
+	--lh-sm: #{$lh-sm};
+	--lh-md: #{$lh-md};
+	--lh-lg: #{$lh-lg};
+	--lh-xl: #{$lh-xl};
+	--lh-xxl: #{$lh-xxl};
+
+	--fw-regular: #{$fw-regular};
+	--fw-bold: #{$fw-bold};
+
+	--ls-xs: #{$ls-xs};
+	--ls-sm: #{$ls-sm};
+	--ls-md: #{$ls-md};
+	--ls-lg: #{$ls-lg};
+	--ls-xl: #{$ls-xl};
+}

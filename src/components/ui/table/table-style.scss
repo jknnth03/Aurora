@@ -1,0 +1,199 @@
+// table-component.scss - BEM Structure
+
+.table-component {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	&__container {
+		flex: 1;
+		position: relative;
+		overflow: auto;
+	}
+
+	&__table {
+		table-layout: fixed;
+	}
+
+	&__header {
+		&-cell {
+			width: 50px;
+
+			&--sortable {
+				cursor: pointer;
+				user-select: none;
+
+				&:hover {
+					.table-component__sort-label {
+						color: var(--mui-palette-secondary-light);
+					}
+				}
+			}
+
+			&--with-width {
+				// Applied when column.width is specified
+			}
+		}
+	}
+
+	&__sort-label {
+		color: var(--mui-palette-primary-contrastText);
+
+		&--active {
+			color: var(--mui-palette-primary-contrastText);
+			font-weight: bold;
+		}
+
+		&:hover {
+			color: var(--mui-palette-secondary-light);
+		}
+	}
+
+	&__row {
+		cursor: default;
+
+		&--clickable {
+			cursor: pointer;
+		}
+
+		&:hover {
+			background-color: var(--background-main);
+		}
+
+		&--expanded {
+			// Styles for expanded rows if needed
+		}
+	}
+
+	&__cell {
+		border-bottom: 0;
+
+		&--expand-control {
+			border-bottom: 0;
+		}
+
+		&--with-width {
+			// Applied when column.width is specified
+		}
+
+		&--collapse {
+			padding-bottom: 0;
+			padding-top: 0;
+			padding-left: 32px; // 4 * 8px (MUI spacing)
+			padding-right: 32px;
+		}
+
+		&--error {
+			// For error state cells
+		}
+
+		&--no-data {
+			text-align: center;
+			padding-top: 24px; // 3 * 8px
+			padding-bottom: 24px;
+		}
+	}
+
+	&__collapse-content {
+		margin: 8px; // 1 * 8px
+	}
+
+	&__expand-button {
+		// Styles for expand/collapse buttons
+	}
+
+	&__pagination {
+		height: 50px;
+		width: fit-content;
+		position: absolute;
+		bottom: 0;
+		right: 20px;
+		overflow: hidden;
+	}
+
+	&__skeleton {
+		&-cell {
+			// Base skeleton cell styles
+		}
+
+		&-expand-control {
+			width: 20px;
+		}
+
+		&-content {
+			width: 100%;
+		}
+	}
+
+	&__alert {
+		margin-top: 16px; // 2 * 8px
+		margin-bottom: 16px;
+
+		&--error {
+			// Error alert specific styles
+		}
+	}
+
+	&__tooltip {
+		// Tooltip specific styles if needed
+	}
+
+	&__icon-toggle {
+		// Icon toggle button styles
+	}
+
+	// State modifiers
+	&--loading {
+		// Loading state styles
+	}
+
+	&--error {
+		// Error state styles
+	}
+
+	&--empty {
+		// Empty state styles
+	}
+
+	&--with-pagination {
+		// When pagination is enabled
+	}
+
+	&--with-collapse {
+		// When collapse functionality is enabled
+	}
+
+	&--with-context-menu {
+		// When right-click context menu is enabled
+	}
+}
+
+// Context menu related styles (if needed)
+.table-component-context-menu {
+	// Context menu specific styles
+}
+
+// Additional utility classes for common patterns
+.table-component-utils {
+	&__clickable {
+		cursor: pointer;
+	}
+
+	&__non-clickable {
+		cursor: default;
+	}
+
+	&__sortable {
+		cursor: pointer;
+		user-select: none;
+	}
+
+	&__full-width {
+		width: 100%;
+	}
+
+	&__no-border {
+		border-bottom: 0;
+	}
+}

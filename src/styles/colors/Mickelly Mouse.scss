@@ -1,0 +1,155 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FF0000",
+			// Classic Mickey red
+			light: "#FF3333",
+			// Lightened red
+			dark: "#D10000",
+			// Darkened red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#FFD700",
+			// Golden accents
+			light: "#FFEC57",
+			// Lightened gold
+			dark: "#C7A500",
+			// Darkened gold
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#ffffff",
+			// White
+			light: "#F5F5F5",
+			// Lightened white
+			dark: "#E5E5E5",
+			// Slightly darker white
+			contrastText: "#1A1A1A",
+			// Mickey black text
+		),
+		background: (
+			main: "#FFF8F8",
+			// Soft white with red tint
+			light: "#FFE5E5",
+			// Lighter red tint
+			dark: "#F0F0F0",
+			// Very light tint
+			contrastText: "#1A1A1A",
+			// Mickey black text
+		),
+		text: (
+			main: "#1A1A1A",
+			// Mickey black
+			light: "#4A4A4A",
+			// Dark grey
+			dark: "#000000",
+			// Pure black
+			contrastText: "#fff",
+		),
+		warning: (
+			main: "#F2C354",
+			// Yellow
+			light: "#F4D777",
+			// Light yellow
+			dark: "#C79F29",
+			// Dark yellow
+			contrastText: "#000",
+		),
+		error: (
+			main: "#9b4444",
+			// Dark red
+			light: "#B75C5C",
+			// Lightened dark red
+			dark: "#6E2F2F",
+			// Darkened dark red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#2e7d32",
+			// Green
+			light: "#4C9E54",
+			// Lightened green
+			dark: "#1F5F25",
+			// Darkened green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FF4040",
+			// Lighter Mickey red
+			light: "#FF6666",
+			// Lightened red
+			dark: "#D10000",
+			// Darkened red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#FFE55C",
+			// Brighter gold
+			light: "#FFEC88",
+			// Lightened gold
+			dark: "#D1A300",
+			// Darkened gold
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#ffffff",
+			// White
+			light: "#F5F5F5",
+			// Lightened white
+			dark: "#E5E5E5",
+			// Slightly darker white
+			contrastText: "#1A1A1A",
+			// Mickey black text
+		),
+		background: (
+			main: "#1A1A1A",
+			// Mickey black
+			light: "#333333",
+			// Dark grey
+			dark: "#000000",
+			// Pure black
+			contrastText: "#FFE6E6",
+			// Soft warm white text
+		),
+		text: (
+			main: "#FFE6E6",
+			// Soft warm white
+			light: "#F5B7B7",
+			// Light red-tinted white
+			dark: "#D9A5A5",
+			// Darkened red-tinted white
+			contrastText: "#1A1A1A",
+			// Mickey black text
+		),
+		warning: (
+			main: "#F2C354",
+			// Yellow
+			light: "#F4D777",
+			// Light yellow
+			dark: "#C79F29",
+			// Dark yellow
+			contrastText: "#000",
+		),
+		error: (
+			main: "#d24545",
+			// Dark red
+			light: "#E86767",
+			// Lightened dark red
+			dark: "#9F1F1F",
+			// Darkened dark red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#599f68",
+			// Green
+			light: "#7BAF8A",
+			// Lightened green
+			dark: "#427C51",
+			// Darkened green
+			contrastText: "#fff",
+		),
+	),
+);

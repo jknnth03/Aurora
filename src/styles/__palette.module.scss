@@ -1,0 +1,54 @@
+@use "./autoColors" as colorslist;
+@use "sass:string"; // Imports Sass string functions
+@use "sass:map"; // Imports Sass map functions
+
+// FYI WHEN USING COLORS - var(--name), check on the elements tab and see roots for more details THIS IS CONNECTED ON THE MUI THEME
+
+// Map containing all color palettes. Keys are theme names, values are the imported palettes.
+// $colors: (
+// 	"Green": CGreen.$Green,
+// 	// Green theme
+// 	"Gibs": CGibs.$Gibs,
+// 	// Gibs theme
+// 	"Vega": CVega.$Vega,
+// 	// Vega theme
+// 	"Blue": CBlue.$Blue,
+// 	// Blue theme
+// );
+
+// CSS Variables for each color, prefixed with theme name. Defined in the :root scope.
+
+//alisin na to di na kailangan para mag initialized ng STYLE ROOT from here.
+:root {
+	// @each $paletteName, $themeMap in colorslist.$colors {
+	// 	@each $modeName, $colorMap in $themeMap {
+	// 		@each $colorGroupName, $colorSet in $colorMap {
+	// 			@each $variant, $value in $colorSet {
+	// 				--#{$paletteName}--#{$modeName}--#{$colorGroupName}--#{$variant}: #{$value};
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// @each $colorGroupName, $colorSet in map.get(map.get(colorslist.$colors, "Orange"), "light") {
+
+	// 	@each $variant, $value in $colorSet {
+	// 		--#{ $colorGroupName }-#{ $variant }: var(
+	// 			--Green--light--#{$colorGroupName}--#{$variant}
+	// 		); // Use the full path as the default
+	// 	}
+	// }
+}
+
+:export {
+	@each $paletteName, $themeMap in colorslist.$colors {
+		@each $modeName, $colorMap in $themeMap {
+			@each $colorGroupName, $colorSet in $colorMap {
+				@each $variant, $value in $colorSet {
+					// Export the variable name with the value for use in JavaScript. Format: Palette--Mode--Group--Variant
+					#{$paletteName}--#{$modeName}--#{$colorGroupName}--#{$variant}: $value;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,146 @@
+$color: (
+	light: (
+		primary: (
+			main: "#77D970",
+			// Neon green
+			light: "#99FF99",
+			// Soft glowing green
+			dark: "#33FF66",
+			// Electric lime green
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#33FF66",
+			// Electric lime green
+			light: "#77D970",
+			// Neon green
+			dark: "#1DBB30",
+			// Darker neon green
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#B0FFB0",
+			// Soft neon green
+			light: "#99FF99",
+			// Glowing green
+			dark: "#77D970",
+			// Vibrant neon green
+			contrastText: "#2B2B2B",
+			// Dark gray
+		),
+		background: (
+			main: "#1A1A1A",
+			// Deep black
+			light: "#242424",
+			// Slightly lighter black
+			dark: "#2B2B2B",
+			// Dark gray
+			contrastText: "#E8FFE8",
+			// Glow green text
+		),
+		text: (
+			main: "#E8FFE8",
+			// Glow green text
+			light: "#A8FFC6",
+			// Soft neon green text
+			dark: "#2B2B2B",
+			// Dark text
+			contrastText: "#1A1A1A",
+			// Black background
+		),
+		warning: (
+			main: "#FF9800",
+			// Vibrant orange for warnings
+			light: "#FFB74D",
+			dark: "#F57C00",
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#FF4C4C",
+			// Neon red for errors
+			light: "#FF6161",
+			dark: "#F44336",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#99FF99",
+			// Soft glowing green
+			light: "#77FF77",
+			// Glowing green
+			dark: "#4CAF50",
+			// Darker glowing green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#77D970",
+			// Vibrant neon green
+			light: "#99FF99",
+			// Glowing green
+			dark: "#33FF66",
+			// Electric lime green
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#33FF66",
+			// Electric lime green
+			light: "#77D970",
+			// Neon green
+			dark: "#1DBB30",
+			// Darker neon green
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#B0FFB0",
+			// Bright neon green
+			light: "#99FF99",
+			// Glowing green
+			dark: "#77D970",
+			// Neon green
+			contrastText: "#121212",
+			// Black background
+		),
+		background: (
+			main: "#000000",
+			// Pitch black
+			light: "#121212",
+			// Almost black
+			dark: "#1A1A1A",
+			// Deep dark gray
+			contrastText: "#A8FFC6",
+			// Soft neon green text
+		),
+		text: (
+			main: "#A8FFC6",
+			// Soft neon green text
+			light: "#8CD37D",
+			dark: "#4B7B53",
+			contrastText: "#121212",
+			// Black background
+		),
+		warning: (
+			main: "#FF8C00",
+			// Bright neon orange
+			light: "#FF9A33",
+			dark: "#F57C00",
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#FF3333",
+			// Neon red
+			light: "#FF6161",
+			dark: "#D32F2F",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#77FF77",
+			// Glowing green
+			light: "#99FF99",
+			// Soft glowing green
+			dark: "#4CAF50",
+			// Darker glowing green
+			contrastText: "#fff",
+		),
+	),
+);

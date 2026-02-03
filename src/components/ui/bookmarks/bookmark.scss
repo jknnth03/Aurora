@@ -1,0 +1,73 @@
+.bookmark-card {
+	width: 100%;
+	max-width: 300px;
+	height: 100%;
+	max-height: 350px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	overflow: hidden;
+
+	&__header {
+		padding: 16px;
+		padding-bottom: 8px;
+
+		.MuiCardHeader-title {
+			font-size: 1rem;
+			font-weight: 500;
+		}
+
+		.MuiCardHeader-subheader {
+			font-size: 0.75rem;
+		}
+	}
+
+	&__content {
+		padding: 0;
+		flex: 1;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__list-container {
+		overflow: auto;
+		flex: 1;
+	}
+
+	&__list-item {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	&__list-button {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		padding-left: 16px;
+		padding-right: 16px;
+		background: red;
+	}
+
+	&__list-icon {
+		min-width: 32px;
+
+		svg {
+			width: 18px;
+			height: 18px;
+		}
+	}
+
+	&__empty-state {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 16px;
+		height: 100%;
+		text-align: center;
+
+		&-text {
+			margin-top: 16px;
+		}
+	}
+}

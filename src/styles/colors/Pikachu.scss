@@ -1,0 +1,127 @@
+$color: (
+	light: (
+		primary: (
+			main: "#FFD700",
+			// Pikachu yellow
+			light: "#FFE135",
+			dark: "#C79A00",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#FF4151",
+			// Cheek red
+			light: "#FF6B6B",
+			// Lighter cheek red
+			dark: "#D32F2F",
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#FFFBEB",
+			// Soft yellow tint
+			dark: "#FFF8D6",
+			// Warm yellow tint
+			contrastText: "#1A1A1A",
+			// Pikachu black details
+		),
+		background: (
+			main: "#FFFBEB",
+			// Soft yellow tint
+			light: "#ffffff",
+			dark: "#FFF8D6",
+			// Warm yellow tint
+			contrastText: "#1A1A1A",
+			// Pikachu black details
+		),
+		text: (
+			main: "#1A1A1A",
+			// Pikachu black details
+			light: "#4F4F4F",
+			dark: "#000000",
+			contrastText: "#fff",
+		),
+		warning: (
+			main: "#FF6B6B",
+			// Lighter cheek red
+			light: "#FF8080",
+			// Bright red
+			dark: "#D32F2F",
+			contrastText: "#000",
+		),
+		error: (
+			main: "#9b4444",
+			light: "#C76A6A",
+			dark: "#7A3232",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#A8D369",
+			// Pokemon health green
+			light: "#B8E075",
+			// Brighter health green
+			dark: "#7A9F4F",
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#FFDE2C",
+			// Brighter Pikachu yellow
+			light: "#FFE066",
+			dark: "#C79A00",
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#FF5367",
+			// Brighter cheek red
+			light: "#FF6F76",
+			dark: "#D32F2F",
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			light: "#FFFBEB",
+			// Soft yellow tint
+			dark: "#FFF8D6",
+			// Warm yellow tint
+			contrastText: "#2B2B2B",
+			// Dark gray like Pikachu's ears
+		),
+		background: (
+			main: "#2B2B2B",
+			// Dark gray like Pikachu's ears
+			light: "#3D3D3D",
+			dark: "#333333",
+			contrastText: "#FFF7D6",
+			// Warm light yellow
+		),
+		text: (
+			main: "#FFF7D6",
+			// Warm light yellow
+			light: "#FFCE9F",
+			dark: "#C4A174",
+			contrastText: "#2B2B2B",
+			// Dark gray like Pikachu's ears
+		),
+		warning: (
+			main: "#FF8080",
+			// Bright red
+			light: "#FF9999",
+			dark: "#D32F2F",
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			light: "#E57373",
+			dark: "#B71C1C",
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#B8E075",
+			// Brighter health green
+			light: "#C8E898",
+			dark: "#8F9D54",
+			contrastText: "#fff",
+		),
+	),
+);

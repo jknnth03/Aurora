@@ -1,0 +1,27 @@
+@use "../../../styles/_mixins.scss" as *;
+
+.finder {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+
+	&__input {
+		display: block;
+
+		@include md {
+			display: none;
+		}
+	}
+
+	&__icon-btn {
+		display: none;
+
+		@include md {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 6px;
+			border-radius: 50%;
+		}
+	}
+}

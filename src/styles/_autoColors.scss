@@ -1,0 +1,91 @@
+@use "./colors/Ambatali.scss" as CAmbatali;
+@use "./colors/Arjay.scss" as CArjay;
+@use "./colors/Berry.scss" as CBerry;
+@use "./colors/Blue.scss" as CBlue;
+@use "./colors/Boris.scss" as CBoris;
+@use "./colors/Boss Bry.scss" as CBoss_Bry;
+@use "./colors/CarlJustine.scss" as CCarlJustine;
+@use "./colors/Charlizard.scss" as CCharlizard;
+@use "./colors/DanDanDan.scss" as CDanDanDan;
+@use "./colors/Daroy.scss" as CDaroy;
+@use "./colors/El Roi.scss" as CEl_Roi;
+@use "./colors/Ford.scss" as CFord;
+@use "./colors/Gibs.scss" as CGibs;
+@use "./colors/HackerMan.scss" as CHackerMan;
+@use "./colors/Henanie.scss" as CHenanie;
+@use "./colors/Jeric.scss" as CJeric;
+@use "./colors/Jerome.scss" as CJerome;
+@use "./colors/JK.scss" as CJK;
+@use "./colors/Joker.scss" as CJoker;
+@use "./colors/Justine.scss" as CJustine;
+@use "./colors/Keigh.scss" as CKeigh;
+@use "./colors/Keli.scss" as CKeli;
+@use "./colors/Lucky Greg.scss" as CLucky_Greg;
+@use "./colors/Mario.scss" as CMario;
+@use "./colors/Mickelly Mouse.scss" as CMickelly_Mouse;
+@use "./colors/Mint.scss" as CMint;
+@use "./colors/Neil.scss" as CNeil;
+@use "./colors/Neon.scss" as CNeon;
+@use "./colors/Orange.scss" as COrange;
+@use "./colors/Perona.scss" as CPerona;
+@use "./colors/Pikachu.scss" as CPikachu;
+@use "./colors/Plum.scss" as CPlum;
+@use "./colors/Pluto.scss" as CPluto;
+@use "./colors/Purple.scss" as CPurple;
+@use "./colors/Ralph.scss" as CRalph;
+@use "./colors/Rannie.scss" as CRannie;
+@use "./colors/Sam.scss" as CSam;
+@use "./colors/Sian.scss" as CSian;
+@use "./colors/SpiderMan.scss" as CSpiderMan;
+@use "./colors/Tons.scss" as CTons;
+@use "./colors/Vega.scss" as CVega;
+@use "./colors/Vince.scss" as CVince;
+@use "./colors/Xenh.scss" as CXenh;
+@use "./colors/Ymir.scss" as CYmir;
+
+$colors: (
+  "Ambatali": CAmbatali.$color,
+  "Arjay": CArjay.$color,
+  "Berry": CBerry.$color,
+  "Blue": CBlue.$color,
+  "Boris": CBoris.$color,
+  "Boss_Bry": CBoss_Bry.$color,
+  "CarlJustine": CCarlJustine.$color,
+  "Charlizard": CCharlizard.$color,
+  "DanDanDan": CDanDanDan.$color,
+  "Daroy": CDaroy.$color,
+  "El_Roi": CEl_Roi.$color,
+  "Ford": CFord.$color,
+  "Gibs": CGibs.$color,
+  "HackerMan": CHackerMan.$color,
+  "Henanie": CHenanie.$color,
+  "Jeric": CJeric.$color,
+  "Jerome": CJerome.$color,
+  "JK": CJK.$color,
+  "Joker": CJoker.$color,
+  "Justine": CJustine.$color,
+  "Keigh": CKeigh.$color,
+  "Keli": CKeli.$color,
+  "Lucky_Greg": CLucky_Greg.$color,
+  "Mario": CMario.$color,
+  "Mickelly_Mouse": CMickelly_Mouse.$color,
+  "Mint": CMint.$color,
+  "Neil": CNeil.$color,
+  "Neon": CNeon.$color,
+  "Orange": COrange.$color,
+  "Perona": CPerona.$color,
+  "Pikachu": CPikachu.$color,
+  "Plum": CPlum.$color,
+  "Pluto": CPluto.$color,
+  "Purple": CPurple.$color,
+  "Ralph": CRalph.$color,
+  "Rannie": CRannie.$color,
+  "Sam": CSam.$color,
+  "Sian": CSian.$color,
+  "SpiderMan": CSpiderMan.$color,
+  "Tons": CTons.$color,
+  "Vega": CVega.$color,
+  "Vince": CVince.$color,
+  "Xenh": CXenh.$color,
+  "Ymir": CYmir.$color,
+);

@@ -1,0 +1,156 @@
+$color: (
+	light: (
+		primary: (
+			main: "#740001",
+			// Gryffindor red
+			light: "#9B262B",
+			// Lighter Gryffindor red
+			dark: "#5A0E0F",
+			// Darker Gryffindor red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#D3A625",
+			// Golden snitch gold
+			light: "#F1C232",
+			// Lighter gold
+			dark: "#9E7B1F",
+			// Darker gold
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F5F5F5",
+			// Light gray
+			dark: "#E5E5E5",
+			// Darker gray
+			contrastText: "#1A1A1A",
+			// Dark text
+		),
+		background: (
+			main: "#F9F5ED",
+			// Parchment color
+			light: "#F5EDD8",
+			// Aged parchment
+			dark: "#E3D6A8",
+			// Lighter parchment
+			contrastText: "#1A1A1A",
+			// Dark text
+		),
+		text: (
+			main: "#1A1A1A",
+			// Dark text
+			light: "#BDC3C7",
+			// Light gray text
+			dark: "#000000",
+			// Black text
+			contrastText: "#F9F5ED",
+			// Parchment background
+		),
+		warning: (
+			main: "#FFB400",
+			// Hufflepuff yellow
+			light: "#FFD43B",
+			// Lighter yellow
+			dark: "#C79C00",
+			// Darker yellow
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#9b4444",
+			// Fiery red for error
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#1A472A",
+			// Slytherin green
+			light: "#2D6A49",
+			// Lighter green
+			dark: "#0F3A23",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#9E1316",
+			// Brighter Gryffindor red
+			light: "#D13D43",
+			// Lighter red
+			dark: "#7A0E0F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#FFD700",
+			// Ravenclaw gold
+			light: "#FFEC60",
+			// Lighter gold
+			dark: "#B78E00",
+			// Darker gold
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F5F5F5",
+			// Light gray
+			dark: "#241529",
+			// Deep dark background
+			contrastText: "#F0D6A3",
+			// Warm parchment text
+		),
+		background: (
+			main: "#1A1A1A",
+			// Dark background
+			light: "#2D2D2D",
+			// Darker gray
+			dark: "#262626",
+			// Even darker background
+			contrastText: "#F0D6A3",
+			// Warm parchment text
+		),
+		text: (
+			main: "#F0D6A3",
+			// Warm parchment text
+			light: "#E0B2FF",
+			// Lighter parchment text
+			dark: "#B87CFF",
+			// Darker parchment text
+			contrastText: "#1A1A1A",
+			// Dark background
+		),
+		warning: (
+			main: "#FFD700",
+			// Bright yellow for warning
+			light: "#FFEC60",
+			// Lighter yellow
+			dark: "#B78E00",
+			// Darker yellow
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			// Fiery error red
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#2A623D",
+			// Deep Slytherin green
+			light: "#3B7F56",
+			// Lighter green
+			dark: "#1D4B28",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+);

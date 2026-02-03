@@ -1,0 +1,572 @@
+// Import the Sass math module to use its functions
+@use "sass:map";
+@use "sass:math";
+
+// Container for the mode switch
+.mode-switch-container {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+// Base mode switch
+.mode-switch {
+	position: relative;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	width: 64px;
+	height: 32px;
+	border-radius: 16px;
+	outline: none;
+	overflow: hidden;
+	transition: transform 0.2s ease;
+
+	&:focus-visible {
+		box-shadow: 0 0 0 2px #fff, 0 0 0 4px #3d8bfd;
+	}
+}
+
+// Size variants with maps for easier maintenance
+$size-variants: (
+	"xxxs": (
+		width: 24px,
+		height: 12px,
+		radius: 7px,
+	),
+	"xxs": (
+		width: 36px,
+		height: 18px,
+		radius: 9px,
+	),
+	"xs": (
+		width: 40px,
+		height: 20px,
+		radius: 10px,
+	),
+	"sm": (
+		width: 52px,
+		height: 26px,
+		radius: 13px,
+	),
+	// md is default size (defined above)
+	"lg":
+		(
+			width: 80px,
+			height: 40px,
+			radius: 20px,
+		),
+	"xl": (
+		width: 96px,
+		height: 48px,
+		radius: 24px,
+	),
+);
+
+@each $size, $dimensions in $size-variants {
+	.mode-switch-#{$size} {
+		width: map.get($dimensions, width);
+		height: map.get($dimensions, height);
+		border-radius: map.get($dimensions, radius);
+
+		.switch-track {
+			border-radius: map.get($dimensions, radius);
+		}
+	}
+}
+
+// Switch track for light/dark background
+.switch-track {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, #87ceeb, #1e90ff);
+	border-radius: 16px;
+	transition: background 0.5s ease;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 4px;
+	overflow: hidden;
+
+	.dark & {
+		background: linear-gradient(90deg, #1a1a2e, #16213e);
+	}
+}
+
+// Celestial body (sun/moon) component
+.celestial-body {
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: #ffcc00;
+	left: 4px;
+	top: 4px;
+	transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.5s ease, box-shadow 0.5s ease;
+	z-index: 10;
+	box-shadow: 0 0 12px rgba(255, 204, 0, 0.8), 0 0 20px rgba(255, 204, 0, 0.4);
+
+	.dark & {
+		background-color: #e1e1e1;
+		box-shadow: 0 0 8px rgba(225, 225, 225, 0.5), 0 0 16px rgba(225, 225, 225, 0.2);
+	}
+}
+
+// Celestial body sizes for each variant
+@each $size, $dimensions in $size-variants {
+	// Remove units for calculation
+	$height: math.div(map.get($dimensions, height), 1px);
+	$body-size: math.round($height * 0.75) * 1px;
+	$body-offset: math.round(math.div(map.get($dimensions, height) - $body-size, 2));
+
+	.mode-switch-#{$size} .celestial-body {
+		width: $body-size;
+		height: $body-size;
+		left: $body-offset;
+		top: $body-offset;
+	}
+
+	.mode-switch-#{$size}.dark .celestial-body {
+		transform: translateX(map.get($dimensions, width) - $body-size - ($body-offset * 2));
+	}
+}
+
+// Sun core
+.sun-core {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: #fff5c8;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0.8;
+	transition: opacity 0.5s ease;
+
+	.dark & {
+		opacity: 0;
+	}
+}
+
+// Sun core sizes
+@each $size, $dimensions in $size-variants {
+	// Remove units for calculation
+	$height: math.div(map.get($dimensions, height), 1px);
+	$core-size: math.round($height * 0.5) * 1px;
+
+	.mode-switch-#{$size} .sun-core {
+		width: $core-size;
+		height: $core-size;
+	}
+}
+
+// Moon craters
+.moon-crater {
+	position: absolute;
+	background: #d1d1d1;
+	border-radius: 50%;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+
+	.dark & {
+		opacity: 1;
+	}
+}
+
+// Crater positions (simplified with variables)
+$crater-positions: (
+	"crater-1": (
+		width: 8px,
+		height: 8px,
+		top: 6px,
+		left: 8px,
+	),
+	"crater-2": (
+		width: 5px,
+		height: 5px,
+		top: 14px,
+		left: 12px,
+	),
+	"crater-3": (
+		width: 3px,
+		height: 3px,
+		top: 10px,
+		left: 16px,
+	),
+);
+
+@each $crater, $position in $crater-positions {
+	.#{$crater} {
+		width: map.get($position, width);
+		height: map.get($position, height);
+		top: map.get($position, top);
+		left: map.get($position, left);
+	}
+}
+
+// Adjust crater sizes for different size variants
+@each $size, $dimensions in $size-variants {
+	// Calculate unitless scale factor
+	$base-height: 32; // Base height in pixels
+	$height-px: math.div(map.get($dimensions, height), 1px); // Convert to number
+	$scale-factor: math.div($height-px, $base-height);
+
+	@each $crater, $position in $crater-positions {
+		// Get position values as numbers without units
+		$width-px: math.div(map.get($position, width), 1px);
+		$height-px: math.div(map.get($position, height), 1px);
+		$top-px: math.div(map.get($position, top), 1px);
+		$left-px: math.div(map.get($position, left), 1px);
+
+		.mode-switch-#{$size} .#{$crater} {
+			width: math.round($width-px * $scale-factor) * 1px;
+			height: math.round($height-px * $scale-factor) * 1px;
+			top: math.round($top-px * $scale-factor) * 1px;
+			left: math.round($left-px * $scale-factor) * 1px;
+		}
+	}
+}
+
+// Stars container
+.stars-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: opacity 0.5s ease 0.2s;
+
+	.dark & {
+		opacity: 1;
+	}
+}
+
+// Star base style
+.star {
+	position: absolute;
+	background: white;
+	border-radius: 50%;
+	width: 2px;
+	height: 2px;
+	animation: twinkle 1.5s infinite alternate;
+}
+
+// Star positions
+$star-positions: (
+	"star-1": (
+		top: 8px,
+		left: 38px,
+		size: 2px,
+		delay: 0s,
+	),
+	"star-2": (
+		top: 16px,
+		left: 46px,
+		size: 3px,
+		delay: 0.3s,
+	),
+	"star-3": (
+		top: 20px,
+		left: 36px,
+		size: 2px,
+		delay: 0.6s,
+	),
+	"star-4": (
+		top: 6px,
+		left: 52px,
+		size: 2px,
+		delay: 0.9s,
+	),
+	"star-5": (
+		top: 12px,
+		left: 58px,
+		size: 1px,
+		delay: 1.2s,
+	),
+);
+
+@each $star, $position in $star-positions {
+	.#{$star} {
+		top: map.get($position, top);
+		left: map.get($position, left);
+		width: map.get($position, size);
+		height: map.get($position, size);
+		animation-delay: map.get($position, delay);
+	}
+}
+
+// Adjust star positions for different sizes
+@each $size, $dimensions in $size-variants {
+	// Calculate unitless scale factor
+	$base-width: 64; // Base width in pixels
+	$width-px: math.div(map.get($dimensions, width), 1px);
+	$width-ratio: math.div($width-px, $base-width);
+
+	@each $star, $position in $star-positions {
+		// Get position values as numbers
+		$top-px: math.div(map.get($position, top), 1px);
+		$left-px: math.div(map.get($position, left), 1px);
+		$size-px: math.div(map.get($position, size), 1px);
+
+		.mode-switch-#{$size} .#{$star} {
+			top: math.round($top-px * $width-ratio) * 1px;
+			left: math.round($left-px * $width-ratio) * 1px;
+			width: math.round($size-px * $width-ratio) * 1px;
+			height: math.round($size-px * $width-ratio) * 1px;
+		}
+	}
+}
+
+// Star twinkle animation
+@keyframes twinkle {
+	0% {
+		opacity: 0.4;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+// Clouds container
+.clouds-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	opacity: 1;
+	transition: opacity 0.5s ease, transform 0.5s ease;
+	transform: translateY(0);
+
+	.dark & {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+}
+
+// Cloud base styles
+.cloud {
+	position: absolute;
+	background: white;
+	border-radius: 10px;
+}
+
+// Cloud 1 with pseudo-elements for the rounded parts
+.cloud-1 {
+	width: 16px;
+	height: 6px;
+	top: 22px;
+	left: 42px;
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		background: white;
+		border-radius: 50%;
+	}
+
+	&:before {
+		width: 10px;
+		height: 10px;
+		top: -5px;
+		left: 2px;
+	}
+
+	&:after {
+		width: 8px;
+		height: 8px;
+		top: -3px;
+		left: 10px;
+	}
+}
+
+// Cloud 2 with pseudo-elements
+.cloud-2 {
+	width: 12px;
+	height: 4px;
+	top: 6px;
+	left: 36px;
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		background: white;
+		border-radius: 50%;
+	}
+
+	&:before {
+		width: 6px;
+		height: 6px;
+		top: -3px;
+		left: 1px;
+	}
+
+	&:after {
+		width: 5px;
+		height: 5px;
+		top: -2px;
+		left: 7px;
+	}
+}
+
+// Adjust cloud sizes and positions for different sizes
+@each $size, $dimensions in $size-variants {
+	// Calculate unitless scale factor
+	$base-width: 64; // Base width in pixels
+	$width-px: math.div(map.get($dimensions, width), 1px);
+	$scale-factor: math.div($width-px, $base-width);
+
+	// Cloud 1 dimensions in px
+	$cloud1-width: 16;
+	$cloud1-height: 6;
+	$cloud1-top: 22;
+	$cloud1-left: 42;
+
+	.mode-switch-#{$size} .cloud-1 {
+		width: math.round($cloud1-width * $scale-factor) * 1px;
+		height: math.round($cloud1-height * $scale-factor) * 1px;
+		top: math.round($cloud1-top * $scale-factor) * 1px;
+		left: math.round($cloud1-left * $scale-factor) * 1px;
+
+		&:before {
+			width: math.round(10 * $scale-factor) * 1px;
+			height: math.round(10 * $scale-factor) * 1px;
+			top: math.round(-5 * $scale-factor) * 1px;
+			left: math.round(2 * $scale-factor) * 1px;
+		}
+
+		&:after {
+			width: math.round(8 * $scale-factor) * 1px;
+			height: math.round(8 * $scale-factor) * 1px;
+			top: math.round(-3 * $scale-factor) * 1px;
+			left: math.round(10 * $scale-factor) * 1px;
+		}
+	}
+
+	// Cloud 2 dimensions
+	$cloud2-width: 12;
+	$cloud2-height: 4;
+	$cloud2-top: 6;
+	$cloud2-left: 36;
+
+	.mode-switch-#{$size} .cloud-2 {
+		width: math.round($cloud2-width * $scale-factor) * 1px;
+		height: math.round($cloud2-height * $scale-factor) * 1px;
+		top: math.round($cloud2-top * $scale-factor) * 1px;
+		left: math.round($cloud2-left * $scale-factor) * 1px;
+
+		&:before {
+			width: math.round(6 * $scale-factor) * 1px;
+			height: math.round(6 * $scale-factor) * 1px;
+			top: math.round(-3 * $scale-factor) * 1px;
+			left: math.round(1 * $scale-factor) * 1px;
+		}
+
+		&:after {
+			width: math.round(5 * $scale-factor) * 1px;
+			height: math.round(5 * $scale-factor) * 1px;
+			top: math.round(-2 * $scale-factor) * 1px;
+			left: math.round(7 * $scale-factor) * 1px;
+		}
+	}
+}
+
+// Sun rays container
+.rays-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: 1;
+	transition: opacity 0.5s ease, transform 0.5s ease;
+	pointer-events: none;
+
+	.dark & {
+		opacity: 0;
+		transform: scale(0.5);
+	}
+}
+
+// Ray base style
+.ray {
+	position: absolute;
+	background: rgba(255, 204, 0, 0.7);
+	width: 2px;
+	height: 6px;
+	border-radius: 1px;
+	transform-origin: center 16px;
+	top: 4px;
+	left: 15px;
+}
+
+// Ray rotations - create base rays
+@for $i from 1 through 6 {
+	$angle: ($i - 1) * 60;
+	.ray-#{$i} {
+		transform: rotate(#{$angle}deg) translateY(-10px);
+	}
+}
+
+// Adjust ray sizes and positions for different sizes
+@each $size, $dimensions in $size-variants {
+	// Calculate unitless scale factor
+	$base-height: 32; // Base height in pixels
+	$height-px: math.div(map.get($dimensions, height), 1px);
+	$scale-factor: math.div($height-px, $base-height);
+
+	// Ray dimensions as numbers
+	$ray-width-base: 2;
+	$ray-height-base: 6;
+	$ray-top-base: 4;
+	$ray-left-base: 15;
+	$ray-origin-base: 16;
+
+	// Calculate scaled dimensions
+	$ray-width: 1px;
+	@if $scale-factor * 2 > 1 {
+		$ray-width: math.round($ray-width-base * $scale-factor) * 1px;
+	}
+	$ray-height: math.round($ray-height-base * $scale-factor) * 1px;
+	$ray-top: math.round($ray-top-base * $scale-factor) * 1px;
+	$ray-left: math.round($ray-left-base * $scale-factor) * 1px;
+	$ray-origin: math.round($ray-origin-base * $scale-factor) * 1px;
+
+	.mode-switch-#{$size} .ray {
+		width: $ray-width;
+		height: $ray-height;
+		border-radius: math.div(math.div($ray-width, 1px), 2) * 1px;
+		transform-origin: center $ray-origin;
+		top: $ray-top;
+		left: $ray-left;
+	}
+
+	// Apply scale transform to rays
+	@for $i from 1 through 6 {
+		$angle: ($i - 1) * 60;
+		.mode-switch-#{$size} .ray-#{$i} {
+			transform: rotate(#{$angle}deg) translateY(-10px) scale($scale-factor);
+		}
+	}
+}
+
+// Media query for reduced motion
+@media (prefers-reduced-motion: reduce) {
+	.mode-switch,
+	.switch-track,
+	.celestial-body,
+	.sun-core,
+	.moon-crater,
+	.stars-container,
+	.clouds-container,
+	.rays-container {
+		transition: none;
+	}
+
+	.star {
+		animation: none;
+		opacity: 0.8;
+	}
+}

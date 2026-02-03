@@ -1,0 +1,156 @@
+$color: (
+	light: (
+		primary: (
+			main: "#5D4037",
+			// Bamboo brown
+			light: "#8E6A4E",
+			// Lighter brown
+			dark: "#3E2C1C",
+			// Darker brown
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#7CB342",
+			// Matcha green
+			light: "#A5D36A",
+			// Lighter green
+			dark: "#4F7F28",
+			// Darker green
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F8F8F8",
+			// Light gray
+			dark: "#E1E1E1",
+			// Slightly darker white
+			contrastText: "#2D2D2D",
+			// Dark text for contrast
+		),
+		background: (
+			main: "#F5F5F0",
+			// Rice paper
+			light: "#F9F9F4",
+			// Lighter rice paper
+			dark: "#E8E8D9",
+			// Slightly darker rice paper
+			contrastText: "#2D2D2D",
+			// Dark text for contrast
+		),
+		text: (
+			main: "#2D2D2D",
+			// Dark text for primary content
+			light: "#5D5D5D",
+			// Medium gray text
+			dark: "#1C1C1C",
+			// Darker text
+			contrastText: "#F5F5F0",
+			// Light background for contrast
+		),
+		warning: (
+			main: "#D4B996",
+			// Sand
+			light: "#E6D0A0",
+			// Lighter sand
+			dark: "#A68A6D",
+			// Darker sand
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#9b4444",
+			// Fiery red for error
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#558B2F",
+			// Matcha green
+			light: "#80B84C",
+			// Lighter green
+			dark: "#406620",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+	dark: (
+		primary: (
+			main: "#795548",
+			// Deep brown
+			light: "#9E7D59",
+			// Lighter brown
+			dark: "#4E3629",
+			// Darker brown
+			contrastText: "#fff",
+		),
+		secondary: (
+			main: "#8BC34A",
+			// Fresh green
+			light: "#A6D75B",
+			// Lighter green
+			dark: "#6B8E30",
+			// Darker green
+			contrastText: "#fff",
+		),
+		tertiary: (
+			main: "#fff",
+			// White for backgrounds
+			light: "#F9F9F9",
+			// Light gray
+			dark: "#2D2D2D",
+			// Dark gray for night mode
+			contrastText: "#E0E0E0",
+			// Light text on dark background
+		),
+		background: (
+			main: "#1A1A1A",
+			// Dark background for night mode
+			light: "#2D2D2D",
+			// Darker gray
+			dark: "#262626",
+			// Deepest gray
+			contrastText: "#E0E0E0",
+			// Light text on dark background
+		),
+		text: (
+			main: "#E0E0E0",
+			// Light gray text for dark mode
+			light: "#FFFFFF",
+			// White text
+			dark: "#A6A6A6",
+			// Medium gray text
+			contrastText: "#1A1A1A",
+			// Dark background for contrast
+		),
+		warning: (
+			main: "#E6CCB3",
+			// Light sand for warning
+			light: "#F4D9A4",
+			// Lighter sand
+			dark: "#B28A64",
+			// Darker sand
+			contrastText: "#fff",
+		),
+		error: (
+			main: "#d24545",
+			// Fiery error red
+			light: "#FF5252",
+			// Lighter red
+			dark: "#D32F2F",
+			// Darker red
+			contrastText: "#fff",
+		),
+		success: (
+			main: "#689F38",
+			// Fresh green for success
+			light: "#8DC44B",
+			// Lighter green
+			dark: "#4E7F2A",
+			// Darker green
+			contrastText: "#fff",
+		),
+	),
+);

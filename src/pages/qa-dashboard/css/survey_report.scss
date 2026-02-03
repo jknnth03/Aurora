@@ -1,0 +1,84 @@
+
+  .printTitleOffset {
+    marginTop: " -5mm !important",
+  },
+  .printContainer {
+    paddingTop: "0 !important",
+    backgroundColor: "white !important",
+    width: "210mm",
+    color: "black",
+  },
+  .printPageBox {
+    breakAfter: "page",
+    pageBreakAfter: "always",
+    border: "2.5px solid var(--primary-main)",
+    borderRadius: "0.5rem",
+    padding: "2.5rem 1.5rem 1.5rem 1.5rem",
+    position: "relative",
+    minHeight: "265mm", // Fits within A4 height
+    maxHeight: "265mm",
+    marginBottom: "30px",
+    backgroundColor: "white",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+    &::before {
+      content: '"Photo Attachments"',
+      position: "absolute",
+      top: "-0.75rem",
+      left: "1.5rem",
+      width: "11rem",
+      textAlign: "center",
+      backgroundColor: "#fff9ee", // Matches your source background
+      color: "black",
+      borderRadius: "5rem",
+      fontSize: "1rem",
+      fontWeight: "bold",
+      zIndex: 10,
+      border: "2.5px solid var(--primary-main)",
+    },
+  },
+  photoContainer: {
+    width: "100%",
+    height: "110mm", // Ensures 2 photos + labels fit perfectly
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+  },
+  imageBox: {
+    border: "2px solid #e0e0e0",
+    textAlign: "center",
+    backgroundColor: "#f9f9f9",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  imgStyle: {
+    height: "100%",
+    width: "100%",
+    objectFit: "contain" as "const",
+  },
+  // Forces boxes to expand for PDF capture
+  noOverflow: {
+    overflow: "visible !important",
+    height: "auto !important",
+  },
+
+  printHeight: {
+    height: "initial !important",
+  },
+  printHeightMeta: {
+    height: "75vh !important",
+  },
+  photoSectionWeb: {
+    borderRadius: "0.5rem",
+    position: "relative",
+    backgroundColor: "white",
+    border: "none !important",
+    padding: "0 !important",
+  },
+  webLabel: { display: "none !important", top: "0.7rem !important" },
+};
