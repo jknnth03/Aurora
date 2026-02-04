@@ -15,7 +15,6 @@ import Sidebar, { SidebarRef } from "../../ui/sidebar/sidebar";
 import SidebarTrigger from "../../ui/sidebar/sidebar-trigger";
 import Footer from "./components/footer";
 import "./protected-layout.scss";
-// import PatchMarker from "../../ui/patch-marker/patch-marker";
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -55,11 +54,9 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
 
   return (
     <div className="protected-layout">
-      {/* Pass the ref to the Sidebar component */}
       <Sidebar ref={sidebarRef} />
       <Box className="protected-layout__content">
         <Box className="protected-layout__header">
-          {/* Pass the ref to the SidebarTrigger */}
           <SidebarTrigger
             asIcon={true}
             sidebarRef={sidebarRef}
@@ -74,7 +71,6 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
               <Pathnko />
             </Box>
             <Box className="protected-layout__toolbar-container protected-layout__toolbar-container--right">
-              <Box>{/* <PatchMarker /> */}</Box>
               <Box>
                 <ProcessMarker />
               </Box>
@@ -93,24 +89,6 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         <QueryDialogs />
         <Box className="protected-layout__children">{children}</Box>
         <Footer />
-        {/* <Box className="protected-layout__footer">
-					<Finder />
-					<Box>
-						<ModeSwitch size="xxxs" />
-					</Box>
-					<DeetButton />
-					<Box>
-						<CleanUpButton />
-					</Box>
-					<Box>
-						<ThemePickerButton />
-					</Box>
-					<Box>
-						<BookmarkToggleButton onClick={toggleBookmarks} />
-					</Box>
-					<Divider orientation="vertical" />
-					<Bookmarks ref={bookmarksRef} />
-				</Box> */}
       </Box>
     </div>
   );

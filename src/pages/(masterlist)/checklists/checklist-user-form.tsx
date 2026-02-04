@@ -711,9 +711,7 @@ const ChecklistUserForm = forwardRef<
                       <IconButton
                         component="label"
                         sx={{
-                          backgroundColor: value
-                            ? "var(--primary-light)"
-                            : "lightgray",
+                          backgroundColor: value ? "var(--primary-light)" : "",
                           margin: "0 auto",
                           display: "block",
                           width: "min-content",
@@ -821,7 +819,7 @@ const ChecklistUserForm = forwardRef<
                     ) : (
                       <Typography
                         variant="body2"
-                        color="text.secondary"
+                        color="black"
                         sx={{ display: "flex", alignItems: "center" }}>
                         No file
                       </Typography>

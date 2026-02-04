@@ -190,7 +190,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
         const storeChecklist = response.data;
         const storeResponse = await getStore(storeChecklist.store.id).unwrap();
         const checklistResponse = await getChecklist(
-          storeChecklist.checklist.id
+          storeChecklist.checklist.id,
         ).unwrap();
         reset({
           store: storeResponse.data,
@@ -226,8 +226,8 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
       criteriaMode: "all",
       mode: "onChange",
     });
-    console.log(watch());
-    console.log(errors);
+    // console.log(watch());
+    // console.log(errors);
     const createStoreChecklistHandler = useCallback(
       async (data: StoreChecklistPayload) => {
         const response = await createStoreChecklist({
@@ -242,7 +242,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
         });
         onSuccess?.();
       },
-      [createStoreChecklist, enqueueSnackbar, onSuccess]
+      [createStoreChecklist, enqueueSnackbar, onSuccess],
     );
 
     const updateStoreChecklistHandler = useCallback(
@@ -264,7 +264,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
         });
         onSuccess?.();
       },
-      [updateStoreChecklist, currentParams.id, enqueueSnackbar, onSuccess]
+      [updateStoreChecklist, currentParams.id, enqueueSnackbar, onSuccess],
     );
 
     const handleStoreChecklistSubmit = useCallback(
@@ -303,7 +303,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
         updateStoreChecklistHandler,
         createStoreChecklistHandler,
         enqueueSnackbar,
-      ]
+      ],
     );
 
     const submitForm = useCallback(async (): Promise<void> => {
@@ -352,7 +352,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
         resetForm,
         isLoading,
       }),
-      [submitForm, resetForm, isLoading]
+      [submitForm, resetForm, isLoading],
     );
 
     const [openStore, setOpenStore] = useState(false);
@@ -448,16 +448,15 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
       } catch (error) {}
     };
 
-    console.log(watch());
-    console.log(errors);
+    // console.log(watch());
+    // console.log(errors);
     return (
       <>
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
           noValidate
-          sx={{ mt: 1 }}
-        >
+          sx={{ mt: 1 }}>
           <Grid container spacing={2}>
             <Grid size={12}>
               <Controller
@@ -470,11 +469,11 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
                       open={openStore}
                       onChange={(_, newValue) => {
                         onChange(() =>
-                          onChange(newValue ?? defaultValues.store)
+                          onChange(newValue ?? defaultValues.store),
                         );
                         setValue(
                           "store_id",
-                          newValue?.id ?? defaultValues.store_id
+                          newValue?.id ?? defaultValues.store_id,
                         );
                       }}
                       value={watch(name)}
@@ -507,8 +506,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
                                           alignItems: "center",
                                           gap: 1,
                                           mr: 1,
-                                        }}
-                                      >
+                                        }}>
                                         <Loader />
                                       </Box>
                                     ) : null}
@@ -536,11 +534,11 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
                       open={openChecklist}
                       onChange={(_, newValue) => {
                         onChange(() =>
-                          onChange(newValue ?? defaultValues.checklist)
+                          onChange(newValue ?? defaultValues.checklist),
                         );
                         setValue(
                           "checklist_id",
-                          newValue?.id ?? defaultValues.checklist_id
+                          newValue?.id ?? defaultValues.checklist_id,
                         );
                       }}
                       value={watch(name)}
@@ -574,8 +572,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
                                           alignItems: "center",
                                           gap: 1,
                                           mr: 1,
-                                        }}
-                                      >
+                                        }}>
                                         <Loader />
                                       </Box>
                                     ) : null}
@@ -596,7 +593,7 @@ const StoreChecklistForm = forwardRef<StoreFormHandle, StoreFormProps>(
         </Box>
       </>
     );
-  }
+  },
 );
 
 export default StoreChecklistForm;

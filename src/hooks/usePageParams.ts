@@ -1,4 +1,3 @@
-// usePageParams.ts
 import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
@@ -22,7 +21,7 @@ export const usePageParams = <T extends PageStateParams>(
     syncWithUrl?: boolean;
     customPath?: string;
     excludeFromUrl?: Array<keyof T>;
-  } = {}
+  } = {},
 ) => {
   const {
     defaultParams = {} as Partial<T>,
@@ -38,13 +37,11 @@ export const usePageParams = <T extends PageStateParams>(
 
   const currentPath = customPath || location.pathname;
 
-  // const { createVisit } = useLastVisit(currentPath);
-
   const allPageParams = useSelector(
-    (state: RootState) => state.pageParams.pages || {}
+    (state: RootState) => state.pageParams.pages || {},
   );
   const pageOrder = useSelector(
-    (state: RootState) => state.pageParams.pageOrder || []
+    (state: RootState) => state.pageParams.pageOrder || [],
   );
 
   const currentPageParams = useMemo(() => {
@@ -60,7 +57,7 @@ export const usePageParams = <T extends PageStateParams>(
     setCookie("last-visit" + currentPath, new Date().toString());
     if (syncWithUrl) {
       const hasChanges = Object.keys(currentParams).some(
-        (key) => currentPageParams[key as keyof T] !== currentParams[key]
+        (key) => currentPageParams[key as keyof T] !== currentParams[key],
       );
 
       if (hasChanges) {
@@ -68,7 +65,7 @@ export const usePageParams = <T extends PageStateParams>(
           updatePageState({
             pageName: currentPath,
             params: currentParams as PageStateParams,
-          })
+          }),
         );
       }
     }
@@ -82,14 +79,14 @@ export const usePageParams = <T extends PageStateParams>(
           setPageState({
             pageName: currentPathForCleanup,
             params: currentQueryParamsToSave,
-          })
+          }),
         );
       }
     };
   }, [currentPath, syncWithUrl, currentParams, dispatch, location.pathname]);
 
   const sanitizeParams = <V extends UrlParamValue>(
-    params: Record<string, V>
+    params: Record<string, V>,
   ): Record<string, string> => {
     return Object.entries(params).reduce((acc, [key, value]) => {
       if (value === undefined || value === null) return acc;
@@ -101,7 +98,7 @@ export const usePageParams = <T extends PageStateParams>(
 
   const excludeKeys = <P extends object>(
     obj: P,
-    keysToExclude: Array<keyof P>
+    keysToExclude: Array<keyof P>,
   ): P => {
     const result = { ...obj };
 
@@ -118,7 +115,7 @@ export const usePageParams = <T extends PageStateParams>(
       const sanitizedParams = sanitizeParams(pathParams);
       return toQueryString(sanitizedParams);
     },
-    [allPageParams]
+    [allPageParams],
   );
 
   const setParams = useCallback(
@@ -127,7 +124,7 @@ export const usePageParams = <T extends PageStateParams>(
         setPageState({
           pageName: currentPath,
           params: params as PageStateParams,
-        })
+        }),
       );
 
       if (syncWithUrl) {
@@ -138,7 +135,7 @@ export const usePageParams = <T extends PageStateParams>(
         navigate(`${currentPath}${queryString}`, { replace: true });
       }
     },
-    [dispatch, currentPath, navigate, syncWithUrl, excludeFromUrl]
+    [dispatch, currentPath, navigate, syncWithUrl, excludeFromUrl],
   );
 
   const updateParams = useCallback(
@@ -147,7 +144,7 @@ export const usePageParams = <T extends PageStateParams>(
         updatePageState({
           pageName: currentPath,
           params: params as PageStateParams,
-        })
+        }),
       );
 
       if (syncWithUrl) {
@@ -166,7 +163,7 @@ export const usePageParams = <T extends PageStateParams>(
       currentPageParams,
       syncWithUrl,
       excludeFromUrl,
-    ]
+    ],
   );
 
   const clearParams = useCallback(() => {
@@ -189,7 +186,7 @@ export const usePageParams = <T extends PageStateParams>(
     <K extends keyof T>(key: K): T[K] => {
       return currentPageParams[key];
     },
-    [currentPageParams]
+    [currentPageParams],
   );
 
   const setParam = useCallback(
@@ -198,14 +195,14 @@ export const usePageParams = <T extends PageStateParams>(
       partialParams[key] = value;
       updateParams(partialParams);
     },
-    [updateParams]
+    [updateParams],
   );
 
   const hasParam = useCallback(
     <K extends keyof T>(key: K): boolean => {
       return key in currentPageParams && currentPageParams[key] !== undefined;
     },
-    [currentPageParams]
+    [currentPageParams],
   );
 
   const navigateTo = useCallback(
@@ -215,7 +212,7 @@ export const usePageParams = <T extends PageStateParams>(
         params?: Partial<PageStateParams>;
         replace?: boolean;
         preserveCurrentState?: boolean;
-      }
+      },
     ) => {
       const {
         params = {},
@@ -228,7 +225,7 @@ export const usePageParams = <T extends PageStateParams>(
           setPageState({
             pageName: currentPath,
             params: currentParams as PageStateParams,
-          })
+          }),
         );
       }
 
@@ -245,7 +242,7 @@ export const usePageParams = <T extends PageStateParams>(
 
       navigate(`${targetPath}${queryString}`, { replace });
     },
-    [dispatch, currentPath, navigate, currentParams, allPageParams]
+    [dispatch, currentPath, navigate, currentParams, allPageParams],
   );
 
   return {

@@ -1,4 +1,3 @@
-// src/routes/index.tsx
 import { Outlet, RouteObject } from "react-router";
 import { CONFIG } from "../config/config";
 import General from "../pages/(settings)/general/page";
@@ -9,14 +8,10 @@ import NotFound from "../pages/not-found/page";
 import UnauthorizedPage from "../pages/unauthorized/page";
 import { ProtectedRoute } from "./protected-route";
 import { PublicRoute } from "./public-route";
-
-// Direct imports for critical routes - no more lazy loading
 import OneCharging from "../pages/(masterlist)/one-charging/page";
-import PatchNotes from "../pages/(masterlist)/patch-notes/page";
 import Roles from "../pages/(masterlist)/roles/page";
 import Users from "../pages/(masterlist)/users/page";
 import Dashboard from "../pages/dashboard/page";
-// import Patch from "../pages/patch/patch";
 import Checklists from "../pages/(masterlist)/checklists/page";
 import Store from "../pages/(masterlist)/store/page";
 import Regions from "../pages/(masterlist)/regions/page";
@@ -47,11 +42,6 @@ export const ROUTES: RouteObject[] = [
     ),
     errorElement: <ErrorPage />,
   },
-  // {
-  //   path: CONFIG.ROUTES.PATCH.PATH,
-  //   element: <Patch />,
-  //   errorElement: <ErrorPage />,
-  // },
   {
     path: "/unauthorized",
     element: <UnauthorizedPage />,
@@ -71,9 +61,7 @@ export const ROUTES: RouteObject[] = [
         element: <Info />,
         errorElement: <ErrorPage />,
       },
-      // Direct components - instant navigation
       { path: CONFIG.ROUTES.DASHBOARD.PATH, element: <Dashboard /> },
-
       { path: CONFIG.ROUTES.ONE_CHARGING.PATH, element: <OneCharging /> },
       { path: CONFIG.ROUTES.USERS.PATH, element: <Users /> },
       { path: CONFIG.ROUTES.ROLES.PATH, element: <Roles /> },
@@ -93,12 +81,7 @@ export const ROUTES: RouteObject[] = [
       },
       { path: CONFIG.ROUTES.QA.PATH, element: <QADashboard /> },
       { path: CONFIG.ROUTES.SURVEY_APPROVER.PATH, element: <SurveyApprover /> },
-      // {
-      //   path: CONFIG.ROUTES.PATCH_NOTES.PATH,
-      //   element: <PatchNotes />,
-      // },
       { path: CONFIG.ROUTES.GENERAL.PATH, element: <General /> },
-      // { path: CONFIG.ROUTES.ASSET_TAGS.PATH, element: <AssetTag /> },
     ],
   },
 ];

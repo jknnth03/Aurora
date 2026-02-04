@@ -21,9 +21,11 @@ import {
   IAreaResponse,
   useLazyGetUnpaginatedAreasQuery,
 } from "../../features/api/aurora/masterlist/areas.api.ts";
-import { getData } from "../../features/slices/qaDashboard-slice.ts";
+import {
+  getData,
+  getChecklistData,
+} from "../../features/slices/qaDashboard-slice.ts";
 import { useDispatch } from "react-redux";
-import MonthYearFilter from "../qa-dashboard/components/month-year-filter.tsx";
 import moment from "moment";
 import { useGetSurveyApproversQuery } from "../../features/api/aurora/survey-approver.api.ts";
 import { SurveyApproversResponse } from "../../features/api/aurora/types/survey-approver-types.ts";
@@ -33,22 +35,16 @@ import {
 } from "../../features/api/aurora/types/types.ts";
 
 const SurveyApprover = () => {
-  // State for expanded rows
   const [isOpenRegions, setIsOpenRegions] = useState(false);
   const [regions, setRegions] = useState<IRegionResponse[] | null>(null);
   const [region, setRegion] = useState<IRegionResponse | null>(null);
   const [isOpenAreas, setIsOpenAreas] = useState(false);
   const [areas, setAreas] = useState<IAreaResponse[] | null>(null);
   const [area, setArea] = useState<IAreaResponse | null>(null);
-  const [date, setDate] = useState(new Date());
-
-  const currentMonth = date?.getMonth() + 1;
-  const currentYear = date?.getFullYear();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>();
   const dispatch = useDispatch();
   const { open: openQAChecklistDialog } = useOpenChecklist();
 
-  // Use the pagination hook
   const { pagination } = useTablePagination({
     defaultRowsPerPage: 25,
     totalCount: 0,
@@ -62,11 +58,8 @@ const SurveyApprover = () => {
     isError,
   } = useGetSurveyApproversQuery({
     status: "pending",
-    month: (date?.getMonth() + 1).toString(),
-    year: date?.getFullYear().toString(),
   });
 
-  // Update total count when data is loaded
   if (
     surveyApprovers?.data.total !== undefined &&
     pagination.count !== surveyApprovers.data.total
@@ -74,7 +67,6 @@ const SurveyApprover = () => {
     pagination.count = surveyApprovers.data.total;
   }
 
-  // Define strongly-typed columns for the UserResult data
   const columns: Array<
     ITableColumn<Partial<SurveyApproversResponse>, unknown>
   > = [
@@ -91,7 +83,6 @@ const SurveyApprover = () => {
       getValue: (qaItem) => qaItem.region?.name,
       sortable: true,
     },
-
     {
       id: "area",
       label: "Area",
@@ -118,6 +109,15 @@ const SurveyApprover = () => {
       id: "location",
       label: "Location",
       getValue: (qaItem) => qaItem.name,
+      sortable: true,
+    },
+    {
+      id: "done_on",
+      label: "Done on",
+      getValue: (qaItem) => {
+        const createdAt = qaItem?.store_checklist?.[0]?.checklist?.created_at;
+        return createdAt ? moment(createdAt).format("MM/DD/YYYY") : "-";
+      },
       sortable: true,
     },
     {
@@ -162,14 +162,14 @@ const SurveyApprover = () => {
         }
         const weekStoreAreAllCompleted =
           item?.store_checklist?.[0]?.weekly_record?.every(
-            (record) => record.status === "Completed"
+            (record) => record.status === "Completed",
           );
         const hasApproval = item?.store_checklist?.[0]?.weekly_record?.some(
-          (record) => record.status === "For Approval"
+          (record) => record.status === "For Approval",
         );
         const weekStoreAreSomeOverdue =
           item?.store_checklist?.[0]?.weekly_record?.some(
-            (record) => record.status === "Overdue"
+            (record) => record.status === "Overdue",
           );
         const weekStore = item?.store_checklist?.[0]?.weekly_record;
         const isComplete =
@@ -178,8 +178,8 @@ const SurveyApprover = () => {
           item?.store_checklist?.some(
             (record) =>
               record.weekly_record.find(
-                (record) => record.status === "Rejected"
-              ) !== undefined
+                (record) => record.status === "Rejected",
+              ) !== undefined,
           ) || false;
         let status;
         status = isRejected ? "Rejected" : isComplete ? "Done" : "Pending";
@@ -191,35 +191,67 @@ const SurveyApprover = () => {
     },
   ];
 
-  // Right-click menu items
   const getRightClickMenuItems = (
-    qaItem: SurveyApproversResponse
-  ): Array<ContextMenuItem<SurveyApproversResponse>> => [
-    {
-      id: `view-${qaItem.id}`,
-      label: "View Data",
-      icon: <FrameCorners />,
-      onClick: () => {
-        openQAChecklistDialog(MODULES.SURVEY_APPROVER.ALIAS, qaItem.id);
-        dispatch(
-          getData({
-            touchedData: {
-              ...qaItem,
-              month: currentMonth,
-              year: currentYear,
-              isViewing: true,
-            },
-          })
-        );
+    qaItem: SurveyApproversResponse,
+  ): Array<ContextMenuItem<SurveyApproversResponse>> => {
+    const itemMonth = qaItem?.store_checklist?.[0]?.weekly_record?.[0]?.month;
+    const itemYear = qaItem?.store_checklist?.[0]?.weekly_record?.[0]?.year;
+    const itemWeek = qaItem?.store_checklist?.[0]?.weekly_record?.[0]?.week;
+    const itemStatus = qaItem?.store_checklist?.[0]?.weekly_record?.[0]?.status;
+
+    return [
+      {
+        id: `view-${qaItem.id}`,
+        label: "View Data",
+        icon: <FrameCorners />,
+        onClick: () => {
+          dispatch(
+            getData({
+              touchedData: {
+                ...qaItem,
+                month: itemMonth,
+                year: itemYear,
+                isViewing: true,
+              },
+            }),
+          );
+
+          const checklistPayload = {
+            isForApproving: true,
+            week: itemWeek?.toString() || "",
+            month: itemMonth?.toString() || "",
+            year: itemYear?.toString() || "",
+            status: itemStatus || "",
+          };
+
+          dispatch(
+            getChecklistData({
+              checklistData: checklistPayload,
+            }),
+          );
+
+          openQAChecklistDialog(MODULES.SURVEY_APPROVER.ALIAS, qaItem.id);
+        },
       },
-    },
-  ];
+    ];
+  };
 
   const transformedData = useMemo<SurveyApproversResponse[]>(() => {
     const rows = surveyApprovers?.data.data;
-    const finalData = rows;
+    let finalData = rows;
+
+    // Filter by region
+    if (region) {
+      finalData = finalData?.filter((item) => item.region?.id === region.id);
+    }
+
+    // Filter by area
+    if (area) {
+      finalData = finalData?.filter((item) => item.area?.id === area.id);
+    }
+
     return finalData || [];
-  }, [surveyApprovers?.data.data]);
+  }, [surveyApprovers?.data.data, region, area]);
 
   const [
     getRegions,
@@ -269,7 +301,6 @@ const SurveyApprover = () => {
     );
   };
 
-  // areas
   const [getAreas, { isLoading: isLoadingAreas, isFetching: isFetchingAreas }] =
     useLazyGetUnpaginatedAreasQuery();
 
@@ -337,16 +368,12 @@ const SurveyApprover = () => {
         rightContent: (
           <Box>
             <Grid container spacing={1} size={12}>
-              <Grid>
-                <MonthYearFilter date={date} setDate={setDate} />
-              </Grid>
               <Grid>{renderRegions()}</Grid>
               <Grid>{renderAreas()}</Grid>
             </Grid>
           </Box>
         ),
-      }}
-    >
+      }}>
       <TableComponent<SurveyApproversResponse>
         columns={columns}
         isError={isError}

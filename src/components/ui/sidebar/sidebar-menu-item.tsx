@@ -2,7 +2,6 @@ import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import { Heart } from "@phosphor-icons/react";
-import moment from "moment";
 import React, { memo, useCallback, useMemo, useRef } from "react";
 import { useLocation } from "react-router";
 import { TModule } from "../../../config/modules/modules";
@@ -11,251 +10,249 @@ import ContextMenu from "../context-menu/context-menu";
 import useContextMenu from "../context-menu/useContextMenu";
 import CoolTip from "../cool-tip/cool-tip";
 import IconToggle from "../icon-toggle/icon-toggle";
-import LastVisitText, { LastVisitTextRef } from "../last-visit-text/last-visit-text";
 import useSidebarContextMenu from "./useSidebarContextMenu";
 
 type SidebarMenuItemProps = {
-	module: TModule;
-	isActive: boolean;
-	isExpanded: boolean;
-	isDrawerOpen: boolean;
-	isCollapsing: boolean;
-	onItemClick: (module: TModule) => void;
-	onChildClick: (path: string) => void;
-	isSubmenuItem?: boolean;
+  module: TModule;
+  isActive: boolean;
+  isExpanded: boolean;
+  isDrawerOpen: boolean;
+  isCollapsing: boolean;
+  onItemClick: (module: TModule) => void;
+  onChildClick: (path: string) => void;
+  isSubmenuItem?: boolean;
 };
 
-// Configure moment locale once at module level
-moment.updateLocale("en", {
-	relativeTime: {
-		future: "in %s",
-		past: "%s ago",
-		s: "%d s",
-		ss: "%d s",
-		m: "1 m",
-		mm: "%d m",
-		h: "1 h",
-		hh: "%d h",
-		d: "1 d",
-		dd: "%d d",
-		M: "1 m",
-		MM: "%d m",
-		y: "1 y",
-		yy: "%d y",
-	},
-});
-
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = memo(
-	({
-		module,
-		isActive,
-		isExpanded,
-		isDrawerOpen,
-		isCollapsing,
-		onItemClick,
-		onChildClick,
-		isSubmenuItem = false,
-	}) => {
-		const { isBookmarked } = useBookmark();
-		const location = useLocation();
-		const { getMenuItemsForModule } = useSidebarContextMenu();
-		const { contextMenu, handleContextMenu, handleCloseContextMenu } = useContextMenu<TModule>();
+  ({
+    module,
+    isActive,
+    isExpanded,
+    isDrawerOpen,
+    isCollapsing,
+    onItemClick,
+    onChildClick,
+    isSubmenuItem = false,
+  }) => {
+    const { isBookmarked } = useBookmark();
+    const location = useLocation();
+    const { getMenuItemsForModule } = useSidebarContextMenu();
+    const { contextMenu, handleContextMenu, handleCloseContextMenu } =
+      useContextMenu<TModule>();
 
-		// Ref for triggering last visit updates
-		const lastVisitRef = useRef<LastVisitTextRef>(null);
+    const lastSubmenuItemRef = useRef<HTMLDivElement>(null);
 
-		// Ref for the last submenu item to scroll to
-		const lastSubmenuItemRef = useRef<HTMLDivElement>(null);
+    const hasChildren = useMemo(
+      () => module.CHILDREN && Object.keys(module.CHILDREN).length > 0,
+      [module.CHILDREN],
+    );
 
-		// Memoize expensive calculations
-		const hasChildren = useMemo(
-			() => module.CHILDREN && Object.keys(module.CHILDREN).length > 0,
-			[module.CHILDREN]
-		);
+    const containerClass = useMemo(
+      () =>
+        isSubmenuItem
+          ? `sidebar__submenu-item ${
+              isActive ? "sidebar__submenu-item--active" : ""
+            }`
+          : `sidebar__menu-item ${
+              isActive ? "sidebar__menu-item--active" : ""
+            }`,
+      [isSubmenuItem, isActive],
+    );
 
-		const containerClass = useMemo(
-			() =>
-				isSubmenuItem
-					? `sidebar__submenu-item ${isActive ? "sidebar__submenu-item--active" : ""}`
-					: `sidebar__menu-item ${isActive ? "sidebar__menu-item--active" : ""}`,
-			[isSubmenuItem, isActive]
-		);
+    const childEntries = useMemo(
+      () => (module.CHILDREN ? Object.entries(module.CHILDREN) : []),
+      [module.CHILDREN],
+    );
 
-		const childEntries = useMemo(() => (module.CHILDREN ? Object.entries(module.CHILDREN) : []), [module.CHILDREN]);
+    const handleClick = useCallback(() => {
+      if (isSubmenuItem) {
+        onChildClick(module.PATH);
+      } else {
+        onItemClick(module);
 
-		const handleClick = useCallback(() => {
-			if (isSubmenuItem) {
-				onChildClick(module.PATH);
-				// Use the ref to create a new visit and trigger immediate update
-				lastVisitRef.current?.createVisit();
-			} else {
-				onItemClick(module);
+        if (hasChildren && !isExpanded && isDrawerOpen) {
+          setTimeout(() => {
+            lastSubmenuItemRef.current?.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+              inline: "nearest",
+            });
+          }, 350);
+        }
+      }
+    }, [
+      isSubmenuItem,
+      module,
+      onItemClick,
+      onChildClick,
+      hasChildren,
+      isExpanded,
+      isDrawerOpen,
+    ]);
 
-				// If this item has children and is currently collapsed, scroll to last item after expansion
-				if (hasChildren && !isExpanded && isDrawerOpen) {
-					setTimeout(() => {
-						lastSubmenuItemRef.current?.scrollIntoView({
-							behavior: "smooth",
-							block: "nearest",
-							inline: "nearest",
-						});
-					}, 350); // Wait for collapse animation to complete
-				}
-			}
-		}, [isSubmenuItem, module, onItemClick, onChildClick, hasChildren, isExpanded, isDrawerOpen]);
+    const handleContextMenuClick = useCallback(
+      (event: React.MouseEvent) => {
+        handleContextMenu(event, module);
+      },
+      [handleContextMenu, module],
+    );
 
-		const handleContextMenuClick = useCallback(
-			(event: React.MouseEvent) => {
-				handleContextMenu(event, module);
-			},
-			[handleContextMenu, module]
-		);
+    const iconClass = isSubmenuItem
+      ? "sidebar__submenu-icon"
+      : "sidebar__menu-icon";
+    const textClass = isSubmenuItem
+      ? "sidebar__submenu-text"
+      : "sidebar__menu-text";
 
-		const iconClass = isSubmenuItem ? "sidebar__submenu-icon" : "sidebar__menu-icon";
-		const textClass = isSubmenuItem ? "sidebar__submenu-text" : "sidebar__menu-text";
+    const tooltipTitle = useMemo(
+      () => (!isDrawerOpen && !isSubmenuItem ? module.ALIAS : ""),
+      [isDrawerOpen, isSubmenuItem, module.ALIAS],
+    );
 
-		const tooltipTitle = useMemo(
-			() => (!isDrawerOpen && !isSubmenuItem ? module.ALIAS : ""),
-			[isDrawerOpen, isSubmenuItem, module.ALIAS]
-		);
+    const menuItem = useMemo(
+      () => (
+        <CoolTip
+          title={tooltipTitle}
+          placement="right"
+          arrow
+          aria-label={module.ALIAS}>
+          <Box
+            className={containerClass}
+            onClick={handleClick}
+            onContextMenu={handleContextMenuClick}
+            aria-label={module.ALIAS}>
+            <Badge
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              badgeContent={
+                isBookmarked(module.ALIAS) ? (
+                  <Heart
+                    height={12}
+                    weight="fill"
+                    color="var(--error-light)"
+                    style={{ transform: "rotate(-20deg)" }}
+                  />
+                ) : (
+                  <></>
+                )
+              }
+              aria-label={"bookmark"}
+              title={`You have bookmarked this module`}>
+              <Box className={iconClass}>
+                {isActive ? module.ICON_ON : module.ICON}
+              </Box>
+            </Badge>
+            {(isDrawerOpen || isSubmenuItem) && (
+              <>
+                <Box className={textClass}>{module.ALIAS}</Box>
+                {!isSubmenuItem && hasChildren && (
+                  <IconToggle
+                    isExpanded={isExpanded}
+                    className="sidebar__menu-toggle"
+                  />
+                )}
+              </>
+            )}
+          </Box>
+        </CoolTip>
+      ),
+      [
+        tooltipTitle,
+        containerClass,
+        handleClick,
+        handleContextMenuClick,
+        iconClass,
+        isActive,
+        module.ICON_ON,
+        module.ICON,
+        isDrawerOpen,
+        isSubmenuItem,
+        textClass,
+        module.ALIAS,
+        hasChildren,
+        isBookmarked,
+        isExpanded,
+      ],
+    );
 
-		const menuItem = useMemo(
-			() => (
-				<CoolTip title={tooltipTitle} placement="right" arrow aria-label={module.ALIAS}>
-					<Box
-						className={containerClass}
-						onClick={handleClick}
-						onContextMenu={handleContextMenuClick}
-						aria-label={module.ALIAS}
-					>
-						<Badge
-							anchorOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
-							badgeContent={
-								isBookmarked(module.ALIAS) ? (
-									<Heart
-										height={12}
-										weight="fill"
-										color="var(--error-light)"
-										style={{ transform: "rotate(-20deg)" }}
-									/>
-								) : (
-									<></>
-								)
-							}
-							aria-label={"bookmark"}
-							title={`You have bookmarked this module`}
-						>
-							<Box className={iconClass}>{isActive ? module.ICON_ON : module.ICON}</Box>{" "}
-						</Badge>
-						{(isDrawerOpen || isSubmenuItem) && (
-							<>
-								<Box className={textClass}>
-									{module.ALIAS}
+    const submenuItems = useMemo(() => {
+      if (!hasChildren || !childEntries.length) return null;
 
-									<LastVisitText ref={lastVisitRef} path={module.PATH} />
-								</Box>
-								{!isSubmenuItem && hasChildren && (
-									<IconToggle isExpanded={isExpanded} className="sidebar__menu-toggle" />
-								)}
-							</>
-						)}
-					</Box>
-				</CoolTip>
-			),
-			[
-				tooltipTitle,
-				containerClass,
-				handleClick,
-				handleContextMenuClick,
-				iconClass,
-				isActive,
-				module.ICON_ON,
-				module.ICON,
-				isDrawerOpen,
-				isSubmenuItem,
-				textClass,
-				module.ALIAS,
-				module.PATH,
-				hasChildren,
-				isBookmarked,
-				isExpanded,
-			]
-		);
+      return childEntries.map((child, childIndex) => {
+        const isChildActive =
+          location.pathname === child[1].PATH ||
+          (child[1].PATH !== "/" &&
+            location.pathname.startsWith(`${child[1].PATH}/`));
 
-		const submenuItems = useMemo(() => {
-			if (!hasChildren || !childEntries.length) return null;
+        const isLastItem = childIndex === childEntries.length - 1;
 
-			return childEntries.map((child, childIndex) => {
-				const isChildActive =
-					location.pathname === child[1].PATH ||
-					(child[1].PATH !== "/" && location.pathname.startsWith(`${child[1].PATH}/`));
+        return (
+          <Box
+            key={`child-${module.PATH}-${childIndex}`}
+            ref={isLastItem ? lastSubmenuItemRef : undefined}>
+            <SidebarMenuItem
+              module={child[1]}
+              isActive={isChildActive}
+              isExpanded={false}
+              isDrawerOpen={isDrawerOpen}
+              isCollapsing={isCollapsing}
+              onItemClick={onItemClick}
+              onChildClick={onChildClick}
+              isSubmenuItem={true}
+            />
+          </Box>
+        );
+      });
+    }, [
+      hasChildren,
+      childEntries,
+      location.pathname,
+      module.PATH,
+      isDrawerOpen,
+      isCollapsing,
+      onItemClick,
+      onChildClick,
+    ]);
 
-				const isLastItem = childIndex === childEntries.length - 1;
+    const contextMenuComponent = useMemo(
+      () => (
+        <ContextMenu
+          contextMenu={contextMenu}
+          menuItems={getMenuItemsForModule}
+          onClose={handleCloseContextMenu}
+        />
+      ),
+      [contextMenu, getMenuItemsForModule, handleCloseContextMenu],
+    );
 
-				return (
-					<Box key={`child-${module.PATH}-${childIndex}`} ref={isLastItem ? lastSubmenuItemRef : undefined}>
-						<SidebarMenuItem
-							module={child[1]}
-							isActive={isChildActive}
-							isExpanded={false}
-							isDrawerOpen={isDrawerOpen}
-							isCollapsing={isCollapsing}
-							onItemClick={onItemClick}
-							onChildClick={onChildClick}
-							isSubmenuItem={true}
-						/>
-					</Box>
-				);
-			});
-		}, [
-			hasChildren,
-			childEntries,
-			location.pathname,
-			module.PATH,
-			isDrawerOpen,
-			isCollapsing,
-			onItemClick,
-			onChildClick,
-		]);
+    if (!isSubmenuItem && hasChildren && (isDrawerOpen || isCollapsing)) {
+      return (
+        <>
+          {menuItem}
+          <Collapse
+            in={isExpanded && isDrawerOpen}
+            timeout={300}
+            unmountOnExit
+            className="sidebar__collapse">
+            <Box className="sidebar__submenu">
+              <Box className="sidebar__active-sub-bg" />
+              {submenuItems}
+            </Box>
+          </Collapse>
+          {contextMenuComponent}
+        </>
+      );
+    }
 
-		// Render context menu only when needed
-		const contextMenuComponent = useMemo(
-			() => (
-				<ContextMenu
-					contextMenu={contextMenu}
-					menuItems={getMenuItemsForModule}
-					onClose={handleCloseContextMenu}
-				/>
-			),
-			[contextMenu, getMenuItemsForModule, handleCloseContextMenu]
-		);
-
-		// Main render logic
-		if (!isSubmenuItem && hasChildren && (isDrawerOpen || isCollapsing)) {
-			return (
-				<>
-					{menuItem}
-					<Collapse in={isExpanded && isDrawerOpen} timeout={300} unmountOnExit className="sidebar__collapse">
-						<Box className="sidebar__submenu">
-							<Box className="sidebar__active-sub-bg" />
-							{submenuItems}
-						</Box>
-					</Collapse>
-					{contextMenuComponent}
-				</>
-			);
-		}
-
-		return (
-			<>
-				{menuItem}
-				{contextMenuComponent}
-			</>
-		);
-	}
+    return (
+      <>
+        {menuItem}
+        {contextMenuComponent}
+      </>
+    );
+  },
 );
 
 SidebarMenuItem.displayName = "SidebarMenuItem";

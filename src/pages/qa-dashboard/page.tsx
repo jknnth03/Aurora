@@ -34,7 +34,6 @@ import moment from "moment";
 import { IQADashboardResponse } from "../../features/api/aurora/types/qa-dashboard-types.ts";
 
 const QADashboard = () => {
-  // State for expanded rows
   const [isOpenRegions, setIsOpenRegions] = useState(false);
   const [regions, setRegions] = useState<IRegionResponse[] | null>(null);
   const [region, setRegion] = useState<IRegionResponse | null>(null);
@@ -50,7 +49,6 @@ const QADashboard = () => {
   const dispatch = useDispatch();
   const { open: openQAChecklistDialog } = useOpenChecklist();
 
-  // Use the pagination hook
   const { pagination, paginationParams } = useTablePagination({
     defaultRowsPerPage: 25,
     totalCount: 0,
@@ -68,11 +66,10 @@ const QADashboard = () => {
     status: "active",
     month: date?.getMonth() + 1,
     year: date?.getFullYear(),
-    region: region?.name || "",
-    area: area?.name || "",
+    region: region?.id || undefined,
+    area: area?.id || undefined,
   });
 
-  // Update total count when data is loaded
   if (
     qaItems?.data.total !== undefined &&
     pagination.count !== qaItems.data.total
@@ -80,7 +77,6 @@ const QADashboard = () => {
     pagination.count = qaItems.data.total;
   }
 
-  // Define strongly-typed columns for the UserResult data
   const columns: Array<ITableColumn<Partial<IQADashboardResponse>, unknown>> = [
     {
       id: "idnumber",
@@ -95,12 +91,10 @@ const QADashboard = () => {
       getValue: (qaItem) => qaItem.region?.name,
       sortable: true,
     },
-
     {
       id: "area",
       label: "Area",
       getValue: (qaItem) => qaItem.area?.name,
-      // renderCell: (value) => value,
       sortable: true,
     },
     {
@@ -166,11 +160,11 @@ const QADashboard = () => {
         }
         const weekStoreAreAllCompleted =
           item?.store_checklist?.[0]?.weekly_record?.every(
-            (record) => record.status === "Completed"
+            (record) => record.status === "Completed",
           );
         const weekStoreSomeOverdue =
           item?.store_checklist?.[0]?.weekly_record?.some(
-            (record) => record.status === "Overdue"
+            (record) => record.status === "Overdue",
           );
         const weekStore = item?.store_checklist?.[0]?.weekly_record;
         const isComplete =
@@ -178,10 +172,10 @@ const QADashboard = () => {
         const isEmptyWeekRecords =
           typeof item?.store_checklist?.[0]?.weekly_record == "undefined";
         const isRejected = weekStore?.some(
-          (record) => record.status === "Rejected"
+          (record) => record.status === "Rejected",
         );
         const hasApproval = item?.store_checklist?.[0]?.weekly_record?.some(
-          (record) => record.status === "For Approval"
+          (record) => record.status === "For Approval",
         );
         let status;
         if (hasApproval) {
@@ -201,9 +195,8 @@ const QADashboard = () => {
     },
   ];
 
-  // Right-click menu items
   const getRightClickMenuItems = (
-    qaItem: IQADashboardResponse
+    qaItem: IQADashboardResponse,
   ): Array<ContextMenuItem<IQADashboardResponse>> => [
     {
       id: `view-${qaItem.id}`,
@@ -219,7 +212,7 @@ const QADashboard = () => {
               year: currentYear,
               isViewing: true,
             },
-          })
+          }),
         );
       },
     },
@@ -279,7 +272,6 @@ const QADashboard = () => {
     );
   };
 
-  // areas
   const [getAreas, { isLoading: isLoadingAreas, isFetching: isFetchingAreas }] =
     useLazyGetUnpaginatedAreasQuery();
 
@@ -355,8 +347,7 @@ const QADashboard = () => {
             </Grid>
           </Box>
         ),
-      }}
-    >
+      }}>
       <TableComponent<IQADashboardResponse>
         columns={columns}
         isError={isError}
