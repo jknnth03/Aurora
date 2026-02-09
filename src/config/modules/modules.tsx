@@ -31,6 +31,7 @@ import {
   User,
   UserCircle,
   Wrench,
+  Certificate,
 } from "@phosphor-icons/react";
 import { ReactNode } from "react";
 import OneChargingFilled from "../../assets/Auroraone_charging_filled.svg?react";
@@ -70,7 +71,7 @@ export type MasterlistChildKey =
   | "STORE_CHECKLIST"
   | "SCORE_RATING"
   | "CHECKLIST"
-  | "PATCH_NOTES";
+  | "GRADING";
 
 export type AccountTitleChildKey =
   | "FINANCIAL_STATEMENTS"
@@ -297,14 +298,14 @@ export const MODULES: TFullModules = {
         ICON_ON: <Star weight="fill" />,
         DESCRIPTION: "Configure score ratings.",
       },
-      // PATCH_NOTES: {
-      //   ALIAS: "Patch Notes",
-      //   KEY: "patch_notes",
-      //   PATH: "/patch_notes",
-      //   ICON: <RocketLaunch />,
-      //   ICON_ON: <RocketLaunch weight="fill" />,
-      //   DESCRIPTION: "Configure user roles and their associated permissions.",
-      // },
+      GRADING: {
+        ALIAS: "Grading",
+        KEY: "grading",
+        PATH: "/grading",
+        ICON: <Certificate />,
+        ICON_ON: <Certificate weight="fill" />,
+        DESCRIPTION: "Configure grading system and criteria.",
+      },
     },
   },
 

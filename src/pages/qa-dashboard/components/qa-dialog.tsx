@@ -67,10 +67,11 @@ type StoreChecklistsType = {
   isOverdue: boolean;
   isOverdueNotAnswerable: boolean;
   isViewing: boolean;
+  isActionsEnabled: boolean;
 };
 
 const QAChecklistDialog = () => {
-  const QAVisits = [];
+  const QAVisits: StoreChecklistsType[] = [];
   const { isOpen: isQAItemOpen, close: closeQADialog } = useOpenChecklist();
   const [searchParams, setSearchParams] = useSearchParams();
   const [openReport, setOpenReport] = useState(false);
@@ -126,7 +127,7 @@ const QAChecklistDialog = () => {
       (week) => week.status === "Approved" || week.status === "Rejected",
     );
   useEffect(() => {
-    saveTouchedData(touchedData); // persists on every change
+    saveTouchedData(touchedData);
   }, [touchedData]);
   useEffect(() => {
     if (
@@ -296,27 +297,59 @@ const QAChecklistDialog = () => {
     },
   ];
 
+  const startOfMonth = moment().startOf("month");
+  const weekName = ["1st", "2nd", "3rd", "4th"];
+  let mondayCount = 0;
+  const day = startOfMonth.clone();
+  const weekStore = singleWeeklyRecord?.data.store_checklist
+    ?.map((checklistItem) => {
+      return checklistItem.weekly_record.map((record) => {
+        return record;
+      });
+    })
+    .flat();
+  const storeName = touchedData.name;
+  const answeredWeeks = weekStore?.map((week) => {
+    return week.week;
+  });
+  const weeksToAnswer: number[] = [];
+
+  const shouldEnableWeekActions = (
+    weekIndex: number,
+    isSurveyApproverMode: boolean,
+  ) => {
+    if (!weekStore || weekStore.length === 0) return weekIndex === 0;
+
+    for (let i = 0; i < weekIndex; i++) {
+      const previousWeek = weekStore[i];
+      if (!previousWeek || previousWeek.status !== "Completed") {
+        return false;
+      }
+    }
+
+    const currentWeek = weekStore[weekIndex];
+    if (!currentWeek) return true;
+
+    if (currentWeek.status === "For Approval") {
+      return isSurveyApproverMode;
+    }
+
+    return currentWeek.status !== "Completed";
+  };
+
   const getRightClickMenuItems = (
     qaItem: StoreChecklistsType,
   ): Array<ContextMenuItem<StoreChecklistsType>> => {
     const forApproval = currentParams.dg === "view-quality-assurance";
     const isForSurveyApprover = currentParams.dg === "view-survey-approver";
 
-    const isDisabledFromApproved = !qaItem.weeksToAnswer.includes(
-      qaItem.weekNumber,
-    );
-
-    const weekLen =
-      weeklyRecords?.data?.store_checklist?.[0]?.weekly_record?.length || 0;
-    const currentWeek = weekLen == 0 ? weekLen + 2 : 0;
-    const isCurrentMonday = (qaItem.currentMonday ?? 0) < currentWeek;
-    const isDisabledFromNonOverdue = qaItem.weekNumber > qaItem.pendingLen;
     const buttons: {
       id: string;
       label: string | JSX.Element;
       icon: JSX.Element;
       onClick: () => void;
     }[] = [];
+
     const showChecklist = {
       id: `show-checklist-${qaItem?.qaItemData?.id}`,
       label: "Show Checklist",
@@ -338,6 +371,7 @@ const QAChecklistDialog = () => {
         );
       },
     };
+
     const startChecking = {
       id: `start-checklist-${qaItem?.qaItemData?.id}`,
       label: "Start Checking",
@@ -362,12 +396,16 @@ const QAChecklistDialog = () => {
         );
       },
     };
+
     const forApprovalModule = {
       id: `for-approval-${qaItem?.qaItemData?.id}`,
       label: <Typography>For Approval</Typography>,
       icon: <ListChecks />,
       onClick: () => {
-        setIsForApprovalOpen({ open: true, id: currentParams.id });
+        setIsForApprovalOpen({
+          open: true,
+          id: qaItem.checklistId || qaItem.qaItemData.id.toString(),
+        });
         dispatch(
           getChecklistData({
             checklistData: {
@@ -383,12 +421,16 @@ const QAChecklistDialog = () => {
         );
       },
     };
+
     const forSurveyApproverModule = {
       id: `for-survey-approver-${qaItem?.qaItemData?.id}`,
       label: <Typography>View</Typography>,
       icon: <MagnifyingGlass />,
       onClick: () => {
-        setIsForSurveyApprovalOpen({ open: true, id: currentParams.id });
+        setIsForSurveyApprovalOpen({
+          open: true,
+          id: qaItem.checklistId || qaItem.qaItemData.id.toString(),
+        });
         dispatch(
           getChecklistData({
             checklistData: {
@@ -427,83 +469,41 @@ const QAChecklistDialog = () => {
       },
     };
 
-    if (
-      !(
-        qaItem.status !== "Completed" ||
-        (!touchedChecklistData?.isOverdueFillup &&
-          qaItem.mondayCount > qaItem.weekLen)
-      )
-    ) {
-      buttons.push(showChecklist);
+    if (!qaItem.isActionsEnabled) {
+      if (qaItem.status === "Completed") {
+        buttons.push(showChecklist);
+        buttons.push(viewReportSummary);
+      }
+      return buttons;
     }
+
     if (
-      ((((!(
-        isDisabledFromApproved ||
-        isDisabledFromNonOverdue ||
-        qaItem.status === "Completed" ||
-        qaItem.isOverdueNotAnswerable ||
-        qaItem.mondayCount > qaItem.weekLen
-      ) ||
-        qaItem.status === "Approved") &&
-        !isForSurveyApprover) ||
-        (!isDisabledFromApproved && qaItem.status === "Approved")) &&
-        !isSurveyApprover &&
-        !isDisabledFromApproved) ||
-      (!isSurveyApprover && isCurrentMonday && qaItem.status !== "Completed")
+      (qaItem.status === "Pending" ||
+        (qaItem.status === "Approved" && !isSurveyApprover)) &&
+      !isSurveyApprover &&
+      !isForSurveyApprover
     ) {
       buttons.push(startChecking);
     }
-    if (
-      isForSurveyApprover &&
-      !(
-        (qaItem.mondayCount > qaItem.weekLen &&
-          touchedChecklistData?.isOverdueFillup) ||
-        qaItem.status !== "For Approval"
-      )
-    ) {
+
+    if (isForSurveyApprover && qaItem.status === "For Approval") {
       buttons.push(forSurveyApproverModule);
     }
-    if (
-      forApproval &&
-      !(
-        !qaItem.isOverdue ||
-        qaItem.status === "Approved" ||
-        qaItem.status === "Rejected" ||
-        qaItem.status === "Completed" ||
-        qaItem.status === "For Approval" ||
-        (qaItem.mondayCount > qaItem.weekLen &&
-          touchedChecklistData?.isOverdueFillup)
-      )
-    ) {
+
+    if (forApproval && qaItem.status === "Overdue") {
       buttons.push(forApprovalModule);
     }
+
     if (qaItem.status === "Completed") {
+      buttons.push(showChecklist);
       buttons.push(viewReportSummary);
     }
-    return buttons.length > 0 ? buttons : [];
-  };
 
-  const startOfMonth = moment().startOf("month");
-  const weekName = ["1st", "2nd", "3rd", "4th"];
-  let mondayCount = 0;
-  const day = startOfMonth.clone();
-  const weekStore = singleWeeklyRecord?.data.store_checklist
-    ?.map((checklistItem) => {
-      return checklistItem.weekly_record.map((record) => {
-        return record;
-      });
-    })
-    .flat();
-  const storeName = touchedData.name;
-  const answeredWeeks = weekStore?.map((week) => {
-    return week.week;
-  });
-  const weeksToAnswer: number[] = [];
+    return buttons;
+  };
 
   while (mondayCount < 4) {
     if (day.day() === 1) {
-      // 1 = Monday
-
       const pendingLen = weekStore?.filter(
         (record) => record?.status == "Approved",
       ).length;
@@ -539,7 +539,6 @@ const QAChecklistDialog = () => {
         ) {
           if (weekStore?.[mondayCount]?.week != undefined) {
             weeksToAnswer.push(weekStore?.[mondayCount]?.week);
-            latestRejected = weekStore?.[mondayCount]?.week;
           }
         }
       } else if (weekStore?.[0]?.status === "Rejected") {
@@ -567,6 +566,12 @@ const QAChecklistDialog = () => {
           }
         }
       }
+
+      const isActionsEnabled = shouldEnableWeekActions(
+        mondayCount,
+        isSurveyApprover,
+      );
+
       if (answeredWeeks?.includes(mondayCount + 1)) {
         QAVisits.push({
           currentMonday: mondayCount + 1,
@@ -586,6 +591,7 @@ const QAChecklistDialog = () => {
           isOverdueNotAnswerable,
           qaItemData: touchedData,
           isOverdue,
+          isActionsEnabled,
         });
       } else {
         QAVisits.push({
@@ -603,6 +609,7 @@ const QAChecklistDialog = () => {
           qaItemData: touchedData,
           isOverdueNotAnswerable,
           isOverdue,
+          isActionsEnabled,
         });
       }
       mondayCount++;

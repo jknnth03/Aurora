@@ -190,11 +190,7 @@ const ChecklistUserForm = forwardRef<
         touchedData?.store_checklist?.[0]?.id.toString() || "",
     },
     {
-      skip:
-        touchedChecklistData.isViewStoreChecklist ||
-        touchedChecklistData.isOverdueFillup ||
-        touchedChecklistData.status === "Pending" ||
-        touchedChecklistData.status === "Overdue",
+      skip: true,
       refetchOnMountOrArgChange: true,
     },
   );

@@ -54,6 +54,10 @@ const QADashboard = () => {
     totalCount: 0,
     isZeroBased: false,
   });
+
+  const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+  const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+
   const {
     data: qaItems,
     isLoading,
@@ -70,12 +74,84 @@ const QADashboard = () => {
     area: area?.id || undefined,
   });
 
+  const { data: previousMonthData } = useGetQAsQuery({
+    search: currentParams?.q,
+    page: paginationParams.page,
+    per_page: paginationParams.per_page,
+    status: "active",
+    month: previousMonth,
+    year: previousYear,
+    region: region?.id || undefined,
+    area: area?.id || undefined,
+  });
+
   if (
     qaItems?.data.total !== undefined &&
     pagination.count !== qaItems.data.total
   ) {
     pagination.count = qaItems.data.total;
   }
+
+  const hasOverdueFromPreviousMonth = (
+    qaItem: IQADashboardResponse,
+  ): boolean => {
+    const now = moment();
+    const selectedMonthStart = moment([
+      currentYear,
+      currentMonth - 1,
+      1,
+    ]).startOf("day");
+    const currentMonthStart = moment([now.year(), now.month(), 1]).startOf(
+      "day",
+    );
+
+    if (selectedMonthStart.isBefore(currentMonthStart)) {
+      return false;
+    }
+
+    const storeCreatedAt = moment(qaItem.created_at).startOf("day");
+    const storeCreatedYear = storeCreatedAt.year();
+    const storeCreatedMonth = storeCreatedAt.month() + 1;
+
+    if (
+      storeCreatedYear > currentYear ||
+      (storeCreatedYear === currentYear && storeCreatedMonth >= currentMonth)
+    ) {
+      return false;
+    }
+
+    const previousStore = previousMonthData?.data.data?.find(
+      (store) => store.id === qaItem.id,
+    );
+
+    if (!previousStore) {
+      return false;
+    }
+
+    if (!previousStore?.store_checklist?.[0]?.weekly_record) {
+      return false;
+    }
+
+    const startOfPrevMonth = moment([previousYear, previousMonth - 1, 1]);
+    const endOfPrevMonth = moment(startOfPrevMonth).endOf("month");
+
+    let mondayCount = 0;
+    const day = startOfPrevMonth.clone();
+
+    while (day.isSameOrBefore(endOfPrevMonth)) {
+      if (day.day() === 1) {
+        mondayCount++;
+      }
+      day.add(1, "day");
+    }
+
+    const weeklyRecords = previousStore.store_checklist[0].weekly_record;
+    const completedCount = weeklyRecords.filter(
+      (record) => record.status === "Completed" || record.status === "Approved",
+    ).length;
+
+    return completedCount < mondayCount;
+  };
 
   const columns: Array<ITableColumn<Partial<IQADashboardResponse>, unknown>> = [
     {
@@ -197,26 +273,31 @@ const QADashboard = () => {
 
   const getRightClickMenuItems = (
     qaItem: IQADashboardResponse,
-  ): Array<ContextMenuItem<IQADashboardResponse>> => [
-    {
-      id: `view-${qaItem.id}`,
-      label: "View Data",
-      icon: <FrameCorners />,
-      onClick: () => {
-        openQAChecklistDialog(MODULES.QA.ALIAS, qaItem.id);
-        dispatch(
-          getData({
-            touchedData: {
-              ...qaItem,
-              month: currentMonth,
-              year: currentYear,
-              isViewing: true,
-            },
-          }),
-        );
+  ): Array<ContextMenuItem<IQADashboardResponse>> => {
+    const menuItems: Array<ContextMenuItem<IQADashboardResponse>> = [
+      {
+        id: `view-${qaItem.id}`,
+        label: "View Data",
+        icon: <FrameCorners />,
+        onClick: () => {
+          openQAChecklistDialog(MODULES.QA.ALIAS, qaItem.id);
+          dispatch(
+            getData({
+              touchedData: {
+                ...qaItem,
+                month: currentMonth,
+                year: currentYear,
+                isViewing: true,
+              },
+            }),
+          );
+        },
+        disabled: hasOverdueFromPreviousMonth(qaItem),
       },
-    },
-  ];
+    ];
+
+    return menuItems;
+  };
 
   const transformedData = useMemo<IQADashboardResponse[]>(() => {
     const rows = qaItems?.data.data;
@@ -358,6 +439,7 @@ const QADashboard = () => {
         onExpandedRowsChange={setExpandedRows}
         rightClickMenuItems={getRightClickMenuItems}
         actions={getRightClickMenuItems}
+        L
         pagination={pagination}
       />
     </MasterlistLayout>

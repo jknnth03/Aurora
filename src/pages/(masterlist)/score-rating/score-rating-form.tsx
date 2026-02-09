@@ -55,7 +55,12 @@ const ScoreRatingForm = forwardRef<ScoreRatingFormHandle, ScoreRatingFormProps>(
       isLoading: isLoadingScoresRating,
       isFetching: isFetchingScoreRating,
       isError: isErrorScoreRating,
-    } = useGetUnpaginatedScoreRatingsQuery({ status: "active" });
+    } = useGetUnpaginatedScoreRatingsQuery(
+      { status: "active" },
+      {
+        skip: !isEditMode && !currentParams.id,
+      },
+    );
 
     const scoreRatingsData = scoreRatings?.data.map((score) => ({
       rating: score.rating,

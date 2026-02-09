@@ -22,6 +22,7 @@ import StoreChecklist from "../pages/(masterlist)/store-checklist/page";
 import RegionHead from "../pages/region-head/page";
 import AreaHead from "../pages/area-head/page";
 import SurveyApprover from "../pages/survey-approver/page";
+import Grading from "../pages/(masterlist)/grading/page";
 
 export const ROUTES: RouteObject[] = [
   {
@@ -71,6 +72,7 @@ export const ROUTES: RouteObject[] = [
       { path: CONFIG.ROUTES.CHECKLIST.PATH, element: <Checklists /> },
       { path: CONFIG.ROUTES.REGION_HEAD.PATH, element: <RegionHead /> },
       { path: CONFIG.ROUTES.AREA_HEAD.PATH, element: <AreaHead /> },
+      { path: CONFIG.ROUTES.GRADING.PATH, element: <Grading /> },
       {
         path: CONFIG.ROUTES.STORE_CHECKLIST.PATH,
         element: <StoreChecklist />,

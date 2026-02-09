@@ -177,24 +177,30 @@ export const SurveyReport = ({
   const [fileType, setFileType] = useState<"pdf" | "docx">("pdf");
   const [downloadingFile, setDownloadingFile] = useState(false);
   const touchedData = useSelector(
-    (state: RootState) => state.qaDashboard.touchedData
+    (state: RootState) => state.qaDashboard.touchedData,
   );
 
   const [getImage] = useLazyGetImageQuery();
 
   const touchedChecklistData = useSelector(
-    (state: RootState) => state.qaDashboard.checklistData
+    (state: RootState) => state.qaDashboard.checklistData,
   );
 
-  const { data: singleWeeklyRecord } = useGetQAQuery({
-    id: touchedData?.id.toString() || "",
-    week: touchedChecklistData.week.slice(0, 1),
-    month: (
-      new Date(`${touchedData.month.toString()} 1, 2000`).getMonth() + 1
-    ).toString(),
-    year: touchedData.year.toString(),
-    store_checklist_id: touchedData?.store_checklist?.[0]?.id.toString() || "",
-  });
+  const { data: singleWeeklyRecord } = useGetQAQuery(
+    {
+      id: touchedData?.id.toString() || "",
+      week: touchedChecklistData.week.slice(0, 1),
+      month: (
+        new Date(`${touchedData.month.toString()} 1, 2000`).getMonth() + 1
+      ).toString(),
+      year: touchedData.year.toString(),
+      store_checklist_id:
+        touchedData?.store_checklist?.[0]?.id.toString() || "",
+    },
+    {
+      skip: true,
+    },
+  );
   const weeklyRecord =
     singleWeeklyRecord?.data?.store_checklist?.[0]?.weekly_record?.[0];
   const goodPoints =
@@ -237,7 +243,7 @@ export const SurveyReport = ({
             };
           }
         }),
-      })
+      }),
     );
   const storeDuties =
     weeklyRecord?.audit_trail?.[0]?.new_data?.inspection_metadata?.store_duties;
@@ -266,7 +272,7 @@ export const SurveyReport = ({
         totalScore: totalScore,
         sectionNum: sectionIndex + 1,
       });
-    }
+    },
   );
 
   const transformedFindings = findings?.flatMap((finding) => {
@@ -332,7 +338,7 @@ export const SurveyReport = ({
           spacing: {
             after: 200,
           },
-        })
+        }),
       );
     }
     setDownloadingFile(true);
@@ -377,7 +383,7 @@ export const SurveyReport = ({
           } as any),
         ],
         alignment: AlignmentType.CENTER,
-      })
+      }),
     );
 
     // 3. Get all individual images from transformedFindings
@@ -389,7 +395,7 @@ export const SurveyReport = ({
             originalIndex: originalIndex + 1,
             sectionTitle: finding.sectionTitle,
           }))
-          .filter((q) => q.attachments)
+          .filter((q) => q.attachments),
       ) || [];
 
     // 4. Process images and fit multiple per page
@@ -506,7 +512,7 @@ export const SurveyReport = ({
               spacing: {
                 after: IMAGE_SPACING * 20, // Convert points to twips (1 point = 20 twips)
               },
-            })
+            }),
           );
         });
 
@@ -543,7 +549,7 @@ export const SurveyReport = ({
               spacing: {
                 after: IMAGE_SPACING * 20,
               },
-            })
+            }),
           );
         });
       }
@@ -581,9 +587,9 @@ export const SurveyReport = ({
           f.questions
             .map((q) => q.attachments)
             .filter(Boolean)
-            .map((fileName) => fileName.split("/").pop())
-        )
-      )
+            .map((fileName) => fileName.split("/").pop()),
+        ),
+      ),
     );
     filenames.forEach(async (filename = "") => {
       try {
@@ -619,8 +625,7 @@ export const SurveyReport = ({
               backgroundColor: "#fff9ee",
               position: "relative",
             }}
-            className="printContainer"
-          >
+            className="printContainer">
             <DialogTitle id="docx-dialog-title">
               <Grid container size={12} className="printTitleOffset">
                 <Grid size={6}>
@@ -632,8 +637,7 @@ export const SurveyReport = ({
                   container
                   justifyContent={"flex-end"}
                   spacing={2}
-                  size={6}
-                >
+                  size={6}>
                   <Grid sx={{ displayPrint: "none" }} data-html2canvas-ignore>
                     <FormControl variant="outlined">
                       <InputLabel id="download-type-label">
@@ -651,11 +655,10 @@ export const SurveyReport = ({
                         value={fileType || "pdf"}
                         onChange={(e) =>
                           handleChangeType(
-                            e.target.value as "pdf" | "docx" | ""
+                            e.target.value as "pdf" | "docx" | "",
                           )
                         }
-                        label="Download Type"
-                      >
+                        label="Download Type">
                         <MenuItem value={"docx"}>DOCX</MenuItem>
                         <MenuItem value={"pdf"}>PDF</MenuItem>
                       </Select>
@@ -688,8 +691,7 @@ export const SurveyReport = ({
                                 targetRef.current.style.backgroundColor =
                                   originalColor;
                               }
-                        }
-                      >
+                        }>
                         <DownloadSimple fill="white" />
                       </IconButton>
                     </Button>
@@ -699,8 +701,7 @@ export const SurveyReport = ({
                       variant="contained"
                       startIcon={<Printer />}
                       sx={{ height: "52px" }}
-                      onClick={reactToPrintFn}
-                    >
+                      onClick={reactToPrintFn}>
                       PRINT
                     </Button>
                   </Grid>
@@ -711,8 +712,7 @@ export const SurveyReport = ({
                     width: "100%",
                     marginY: "1rem",
                     marginBottom: 0,
-                  }}
-                ></Box>
+                  }}></Box>
               </Grid>
             </DialogTitle>
             <DialogContent>
@@ -722,8 +722,7 @@ export const SurveyReport = ({
                   sx={{ paddingY: "1rem", overflowY: "auto" }}
                   spacing={4}
                   size={12}
-                  className="noOverflow"
-                >
+                  className="noOverflow">
                   <Grid size={8}>
                     <Box
                       sx={{
@@ -735,8 +734,7 @@ export const SurveyReport = ({
                         position: "relative",
                         zIndex: "0",
                         padding: "1.1rem",
-                      }}
-                    >
+                      }}>
                       <Typography
                         sx={{
                           color: "black",
@@ -749,8 +747,7 @@ export const SurveyReport = ({
                           height: "min-content",
                           backgroundColor: "#fff9ee",
                           borderRadius: "5rem",
-                        }}
-                      >
+                        }}>
                         Good Points
                       </Typography>
                       <Typography>{goodPoints || ""}</Typography>
@@ -767,8 +764,7 @@ export const SurveyReport = ({
                         marginTop: "1rem",
                         padding: "1.1rem",
                       }}
-                      className="printHeight"
-                    >
+                      className="printHeight">
                       <Typography
                         sx={{
                           color: "black",
@@ -781,15 +777,13 @@ export const SurveyReport = ({
                           minHeight: "min-content",
                           backgroundColor: "#fff9ee",
                           borderRadius: "5rem",
-                        }}
-                      >
+                        }}>
                         Findings
                       </Typography>
                       <Box
                         overflow={"auto"}
                         sx={{ height: "100%", width: "100%", color: "black" }}
-                        className="noOverflow"
-                      >
+                        className="noOverflow">
                         {transformedFindings?.map((finding, sectionIndex) => {
                           return (
                             <>
@@ -806,8 +800,7 @@ export const SurveyReport = ({
                                     <>
                                       <Typography
                                         key={questionIndex}
-                                        sx={{ paddingLeft: "1rem" }}
-                                      >
+                                        sx={{ paddingLeft: "1rem" }}>
                                         {questionIndex + 1}. {question?.remarks}{" "}
                                         ( -{question?.grade.toFixed(2)}){" "}
                                         {question?.attachments && (
@@ -827,7 +820,7 @@ export const SurveyReport = ({
                                               setCurrentImageUrl(
                                                 question.attachments
                                                   .split("/")
-                                                  .pop() || ""
+                                                  .pop() || "",
                                               );
                                               setViewImage(true);
                                               setImgSrc(
@@ -835,16 +828,15 @@ export const SurveyReport = ({
                                                   question.attachments
                                                     .split("/")
                                                     .pop() || ""
-                                                ]
+                                                ],
                                               );
-                                            }}
-                                          >
+                                            }}>
                                             <FileImage width={"20px"} />
                                           </IconButton>
                                         )}
                                       </Typography>
                                     </>
-                                  )
+                                  ),
                                 )}
                               </Box>
                             </>
@@ -857,8 +849,7 @@ export const SurveyReport = ({
                       container
                       spacing={2}
                       size={12}
-                      sx={{ marginTop: "1rem" }}
-                    >
+                      sx={{ marginTop: "1rem" }}>
                       <Grid size={6}>
                         <Box
                           sx={{
@@ -871,8 +862,7 @@ export const SurveyReport = ({
                             position: "relative",
                             zIndex: "0",
                             padding: "1.1rem",
-                          }}
-                        >
+                          }}>
                           <Typography
                             sx={{
                               color: "black",
@@ -885,15 +875,13 @@ export const SurveyReport = ({
                               height: "min-content",
                               backgroundColor: "#fff9ee",
                               borderRadius: "5rem",
-                            }}
-                          >
+                            }}>
                             Notes
                           </Typography>
                           <Box
                             overflow={"auto"}
                             sx={{ height: "100%", width: "100%" }}
-                            className="noOverflow"
-                          >
+                            className="noOverflow">
                             <Typography color="black">{notes}</Typography>
                           </Box>
                         </Box>
@@ -910,8 +898,7 @@ export const SurveyReport = ({
                             position: "relative",
                             zIndex: "0",
                             padding: "2rem",
-                          }}
-                        >
+                          }}>
                           <Typography
                             sx={{
                               color: "black",
@@ -924,8 +911,7 @@ export const SurveyReport = ({
                               height: "min-content",
                               backgroundColor: "#fff9ee",
                               borderRadius: "5rem",
-                            }}
-                          >
+                            }}>
                             Scores for findings
                           </Typography>
                           <Box
@@ -935,8 +921,7 @@ export const SurveyReport = ({
                               height: "100%",
                               width: "100%",
                               marginTop: "1rem",
-                            }}
-                          >
+                            }}>
                             <Grid container size={12}>
                               {scoresForFindings.map(
                                 (findingScore, scoreIndex) => (
@@ -944,8 +929,7 @@ export const SurveyReport = ({
                                     <Grid size={6}>
                                       <Typography
                                         key={scoreIndex}
-                                        color="black"
-                                      >
+                                        color="black">
                                         {intToRoman(findingScore.sectionNum)} -{" "}
                                         {findingScore.totalPerfect}/
                                         {findingScore.totalItems}
@@ -954,13 +938,12 @@ export const SurveyReport = ({
                                     <Grid size={6} textAlign={"right"}>
                                       <Typography
                                         key={scoreIndex}
-                                        color="black"
-                                      >
+                                        color="black">
                                         {findingScore.totalScore}
                                       </Typography>
                                     </Grid>
                                   </>
-                                )
+                                ),
                               )}
                               <Grid container alignItems={"end"} size={12}>
                                 <Box
@@ -968,8 +951,7 @@ export const SurveyReport = ({
                                     border: "2px solid var(--primary-main)",
                                     width: "100%",
                                     marginY: "1rem",
-                                  }}
-                                ></Box>
+                                  }}></Box>
                                 <Grid size={6}>
                                   <Typography color="black">Total:</Typography>
                                 </Grid>
@@ -992,8 +974,7 @@ export const SurveyReport = ({
                         borderRadius: "0.5rem 0.5rem 0 0",
                         padding: "1.5rem",
                       }}
-                      className="printHeightMeta"
-                    >
+                      className="printHeightMeta">
                       <Typography color="white" fontWeight={"bold"}>
                         Details
                       </Typography>
@@ -1012,13 +993,11 @@ export const SurveyReport = ({
                           marginY: "0.5rem",
                           height: "0.3rem",
                           backgroundColor: "white",
-                        }}
-                      ></Box>
+                        }}></Box>
                       <Typography
                         color="white"
                         sx={{ marginBottom: "0.7rem" }}
-                        fontWeight={"bold"}
-                      >
+                        fontWeight={"bold"}>
                         On Duty
                       </Typography>
                       {storeDuties?.map((staff, index) => (
@@ -1032,13 +1011,11 @@ export const SurveyReport = ({
                           marginY: "0.5rem",
                           height: "0.3rem",
                           backgroundColor: "white",
-                        }}
-                      ></Box>
+                        }}></Box>
                       <Typography
                         color="white"
                         sx={{ marginBottom: "0.7rem" }}
-                        fontWeight={"bold"}
-                      >
+                        fontWeight={"bold"}>
                         QA Name
                       </Typography>
                       <Typography color="white">{inspectorName}</Typography>
@@ -1048,13 +1025,11 @@ export const SurveyReport = ({
                           marginY: "0.5rem",
                           height: "0.3rem",
                           backgroundColor: "white",
-                        }}
-                      ></Box>
+                        }}></Box>
                       <Typography
                         color="white"
                         sx={{ marginBottom: "0.7rem" }}
-                        fontWeight={"bold"}
-                      >
+                        fontWeight={"bold"}>
                         Time Summary
                       </Typography>
                       <Typography color="white">
@@ -1068,15 +1043,13 @@ export const SurveyReport = ({
                         backgroundColor: "white",
                         border: "2px solid var(--primary-main)",
                         borderRadius: "0 0 0.5rem 0.5rem",
-                      }}
-                    >
+                      }}>
                       <Typography
                         sx={{
                           color: "var(--primary-main)",
                           fontWeight: "bold",
                           padding: "1rem",
-                        }}
-                      >
+                        }}>
                         Signed by{" "}
                         <Box
                           sx={{
@@ -1086,8 +1059,7 @@ export const SurveyReport = ({
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                          }}
-                        ></Box>
+                          }}></Box>
                         <Typography sx={{ width: "100%", textAlign: "center" }}>
                           {inspectorName}
                         </Typography>
@@ -1109,8 +1081,7 @@ export const SurveyReport = ({
                     borderRadius: "0.5rem",
                     zIndex: "0",
                     padding: "1.1rem",
-                  }}
-                >
+                  }}>
                   {/* WEB ONLY LABEL */}
                   <Typography
                     className="web-label"
@@ -1124,8 +1095,7 @@ export const SurveyReport = ({
                       top: "-0.7rem",
                       left: "0.7rem",
                       zIndex: 2,
-                    }}
-                  >
+                    }}>
                     Photo Attachments
                   </Typography>
 
@@ -1139,7 +1109,7 @@ export const SurveyReport = ({
                             originalIndex: originalIndex + 1,
                             sectionTitle: finding.sectionTitle,
                           }))
-                          .filter((q) => q.attachments)
+                          .filter((q) => q.attachments),
                       ) || [];
 
                     // 2. Chunk into groups of 2
@@ -1165,20 +1135,17 @@ export const SurveyReport = ({
                             flexDirection: "column",
                             gap: 3,
                             mb: pairIndex === pairs.length - 1 ? 0 : 4,
-                          }}
-                        >
+                          }}>
                           {pair.map((question, idx) => (
                             <Box
                               key={idx}
-                              sx={{ width: "100%", breakInside: "avoid" }}
-                            >
+                              sx={{ width: "100%", breakInside: "avoid" }}>
                               <Typography
                                 sx={{
                                   fontWeight: "bold",
                                   mb: 1,
                                   color: "black",
-                                }}
-                              >
+                                }}>
                                 {question.sectionTitle} - Question #
                                 {question.originalIndex}{" "}
                                 {question.remarks
@@ -1197,8 +1164,7 @@ export const SurveyReport = ({
                                   display: "flex",
                                   justifyContent: "center",
                                   overflow: "hidden",
-                                }}
-                              >
+                                }}>
                                 <img
                                   src={
                                     imageMap[

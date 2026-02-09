@@ -34,10 +34,10 @@ const ForApprovalDialog = ({
   const [reason, setReason] = useState("");
   const [error, setError] = useState("");
   const touchedChecklistData = useSelector(
-    (state: RootState) => state.qaDashboard.checklistData
+    (state: RootState) => state.qaDashboard.checklistData,
   );
   const touchedData = useSelector(
-    (state: RootState) => state.qaDashboard.touchedData
+    (state: RootState) => state.qaDashboard.touchedData,
   );
   const { data: singleWeeklyRecord } = useGetQAQuery(
     {
@@ -50,7 +50,7 @@ const ForApprovalDialog = ({
       store_checklist_id:
         touchedData?.store_checklist?.[0]?.id.toString() || "",
     },
-    { skip: !touchedChecklistData.isForApproving }
+    { skip: !touchedChecklistData.isForApproving },
   );
   const weeklyRecordId =
     singleWeeklyRecord?.data?.store_checklist?.[0]?.weekly_record?.[0]?.id;
@@ -99,8 +99,7 @@ const ForApprovalDialog = ({
         setIsForApprovalOpen({ open: false, id: "" });
       }}
       disableClickAway={true}
-      maxHeight="350px"
-    >
+      maxHeight="350px">
       <DialogTitle>Survey Approval</DialogTitle>
       <DialogContent>
         <Typography>Enter a valid reason</Typography>
@@ -124,8 +123,7 @@ const ForApprovalDialog = ({
           variant="contained"
           loading={isLoading}
           loadingPosition="start"
-          onClick={handleFormSubmit}
-        >
+          onClick={handleFormSubmit}>
           Submit
         </Button>
         <Button
@@ -134,8 +132,7 @@ const ForApprovalDialog = ({
           onClick={() => {
             setIsForApprovalOpen({ open: false, id: "" });
             setReason("");
-          }}
-        >
+          }}>
           Close
         </Button>
       </DialogActions>
