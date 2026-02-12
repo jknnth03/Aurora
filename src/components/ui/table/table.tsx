@@ -502,7 +502,7 @@ function TableComponent<T extends { uniqueId: string | number }>({
           <Fragment key={rowId}>
             <TableRow
               sx={{
-                ":hover": { backgroundColor: "var(--background-main)" },
+                // ":hover": { backgroundColor: "var(--background-main)" },
                 cursor: onRowClick || collapseValue ? "pointer" : "default",
               }}
               onClick={(e) => {

@@ -70,8 +70,8 @@ export type MasterlistChildKey =
   | "STORE"
   | "STORE_CHECKLIST"
   | "SCORE_RATING"
-  | "CHECKLIST"
-  | "GRADING";
+  | "CHECKLIST";
+// | "GRADING";
 
 export type AccountTitleChildKey =
   | "FINANCIAL_STATEMENTS"
@@ -298,14 +298,14 @@ export const MODULES: TFullModules = {
         ICON_ON: <Star weight="fill" />,
         DESCRIPTION: "Configure score ratings.",
       },
-      GRADING: {
-        ALIAS: "Grading",
-        KEY: "grading",
-        PATH: "/grading",
-        ICON: <Certificate />,
-        ICON_ON: <Certificate weight="fill" />,
-        DESCRIPTION: "Configure grading system and criteria.",
-      },
+      // GRADING: {
+      //   ALIAS: "Grading",
+      //   KEY: "grading",
+      //   PATH: "/grading",
+      //   ICON: <Certificate />,
+      //   ICON_ON: <Certificate weight="fill" />,
+      //   DESCRIPTION: "Configure grading system and criteria.",
+      // },
     },
   },
 

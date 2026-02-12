@@ -69,11 +69,17 @@ export interface QADashboardSchema {
   };
 }
 
+export interface AllowableDaysResponse {
+  id: number;
+  allowable_days: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export const qaDashboardApi = api
   .enhanceEndpoints({ addTagTypes: [CONFIG.ENDPOINTS.QA] })
   .injectEndpoints({
     endpoints: (builder) => ({
-      // GET - Read users with pagination
       getQAs: builder.query<
         PaginatedApiResponse<IQADashboardResponse>,
         QADashboardSearchParams
@@ -264,6 +270,7 @@ export const qaDashboardApi = api
           { type: CONFIG.ENDPOINTS.QA, id: "LIST" },
         ],
       }),
+
       getImage: builder.query<string, { filename: string }>({
         query: (params) => ({
           url: `attachments/view`,
@@ -283,6 +290,15 @@ export const qaDashboardApi = api
           });
         },
       }),
+
+      getAllowableDays: builder.query<ApiResponse<AllowableDaysResponse>, void>(
+        {
+          query: () => ({
+            url: `allowable_days`,
+          }),
+          providesTags: [{ type: CONFIG.ENDPOINTS.QA, id: "ALLOWABLE_DAYS" }],
+        },
+      ),
     }),
     overrideExisting: false,
   });
@@ -304,4 +320,6 @@ export const {
   useDownloadImagesMutation,
   useGetImageQuery,
   useLazyGetImageQuery,
+  useGetAllowableDaysQuery,
+  useLazyGetAllowableDaysQuery,
 } = qaDashboardApi;
