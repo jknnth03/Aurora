@@ -25,6 +25,7 @@ import { getChecklistData } from "../../../features/slices/qaDashboard-slice";
 import {
   useForApprovalMutation,
   useGetQAQuery,
+  useGetAllowableDaysQuery,
 } from "../../../features/api/aurora/qa-dashboard.api";
 import { IQADashboardResponse } from "../../../features/api/aurora/types/qa-dashboard-types";
 import { ArrowCounterClockwise, MagnifyingGlass } from "@phosphor-icons/react";
@@ -87,48 +88,50 @@ const QAChecklistDialog = () => {
   const isSurveyApprover = currentParams?.dg === "view-survey-approver";
   const [forApprove, { isLoading }] = useForApprovalMutation();
   const [approve, { isLoading: isLoadingApprove }] = useApproveSurveyMutation();
+
+  const { data: allowableDaysData } = useGetAllowableDaysQuery();
+  const allowableDays = allowableDaysData?.data?.allowable_days || 5;
+
+  const queryParams = {
+    id: touchedData?.id?.toString() || "",
+    month: touchedData?.month
+      ? (
+          new Date(`${touchedData.month.toString()} 1, 2000`).getMonth() + 1
+        ).toString()
+      : "",
+    year: touchedData?.year?.toString() || "",
+    store_checklist_id: touchedData?.store_checklist?.[0]?.id?.toString() || "",
+  };
+
+  const shouldSkipQuery =
+    !touchedData?.id ||
+    !touchedData?.month ||
+    !touchedData?.year ||
+    !touchedData?.store_checklist?.[0]?.id;
+
   const {
     data: singleWeeklyRecord,
     isLoading: isSingleWeeklyRecordLoading,
     isFetching: isSingleWeeklyRecordFetching,
-  } = useGetQAQuery(
-    {
-      id: touchedData?.id.toString() || "",
-      month: (
-        new Date(`${touchedData.month.toString()} 1, 2000`).getMonth() + 1
-      ).toString(),
-      year: touchedData.year.toString(),
-      store_checklist_id:
-        touchedData?.store_checklist?.[0]?.id.toString() || "",
-    },
-    {
-      refetchOnMountOrArgChange: true,
-      skip: !touchedData.isViewing,
-    },
-  );
+  } = useGetQAQuery(queryParams, {
+    refetchOnMountOrArgChange: true,
+    skip: shouldSkipQuery,
+  });
 
-  const { data: weeklyRecords } = useGetQAQuery(
-    {
-      id: touchedData?.id.toString() || "",
-      month: (
-        new Date(`${touchedData.month.toString()} 1, 2000`).getMonth() + 1
-      ).toString(),
-      year: touchedData.year.toString(),
-      store_checklist_id:
-        touchedData?.store_checklist?.[0]?.id.toString() || "",
-    },
-    {
-      refetchOnMountOrArgChange: true,
-      skip: !touchedChecklistData.isForApproving,
-    },
-  );
+  const { data: weeklyRecords } = useGetQAQuery(queryParams, {
+    refetchOnMountOrArgChange: true,
+    skip: !touchedChecklistData.isForApproving || shouldSkipQuery,
+  });
+
   const isAllApproved =
     weeklyRecords?.data?.store_checklist?.[0]?.weekly_record?.every(
       (week) => week.status === "Approved" || week.status === "Rejected",
     );
+
   useEffect(() => {
     saveTouchedData(touchedData);
   }, [touchedData]);
+
   useEffect(() => {
     if (
       isAllApproved &&
@@ -205,6 +208,35 @@ const QAChecklistDialog = () => {
     } catch (err) {
       console.error("Failed to save touchedData", err);
     }
+  };
+
+  const calculateIsOverdue = (
+    weekIndex: number,
+    month: number,
+    year: number,
+  ): boolean => {
+    const startOfMonth = moment()
+      .year(year)
+      .month(month - 1)
+      .startOf("month");
+    let weekEndDate = startOfMonth.clone();
+    let mondayCounter = 0;
+
+    while (mondayCounter <= weekIndex) {
+      if (weekEndDate.day() === 1) {
+        if (mondayCounter === weekIndex) {
+          weekEndDate.add(6, "days");
+          break;
+        }
+        mondayCounter++;
+      }
+      weekEndDate.add(1, "day");
+    }
+
+    const deadlineDate = weekEndDate.add(allowableDays, "days");
+    const now = moment();
+
+    return now.isAfter(deadlineDate);
   };
 
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>();
@@ -301,17 +333,19 @@ const QAChecklistDialog = () => {
   const weekName = ["1st", "2nd", "3rd", "4th"];
   let mondayCount = 0;
   const day = startOfMonth.clone();
-  const weekStore = singleWeeklyRecord?.data.store_checklist
+  const weekStore = singleWeeklyRecord?.data?.store_checklist
     ?.map((checklistItem) => {
-      return checklistItem.weekly_record.map((record) => {
+      return checklistItem?.weekly_record?.map((record) => {
         return record;
       });
     })
     .flat();
-  const storeName = touchedData.name;
+
+  const storeName = touchedData?.name || "";
   const answeredWeeks = weekStore?.map((week) => {
     return week.week;
   });
+
   const weeksToAnswer: number[] = [];
 
   const shouldEnableWeekActions = (
@@ -508,9 +542,20 @@ const QAChecklistDialog = () => {
         (record) => record?.status == "Approved",
       ).length;
 
+      const currentWeekRecord = weekStore?.[mondayCount];
+      const isWeekNotCompleted =
+        currentWeekRecord?.status !== "Completed" &&
+        currentWeekRecord?.status !== "For Approval" &&
+        currentWeekRecord?.status !== "Approved";
+
       const isOverdue =
-        weekStore?.[mondayCount]?.weekly_skipped?.approved_at === null ||
-        weekStore?.[mondayCount]?.weekly_skipped?.rejected_at === null;
+        isWeekNotCompleted &&
+        calculateIsOverdue(
+          mondayCount,
+          touchedData?.month || 1,
+          touchedData?.year || 2025,
+        );
+
       const isOverdueNotAnswerable =
         isOverdue &&
         (weekStore?.[mondayCount]?.weekly_skipped?.rejected_at !== null ||
@@ -579,7 +624,7 @@ const QAChecklistDialog = () => {
           mondayCount,
           pendingLen,
           weekNumber: weekStore?.[mondayCount]?.week,
-          weekLen: weekStore?.length,
+          weekLen: weekStore?.length || 0,
           store: storeName,
           grade: `${weekStore?.[mondayCount]?.weekly_grade ?? 0}%`,
           week: weekName[mondayCount],
@@ -597,8 +642,8 @@ const QAChecklistDialog = () => {
         QAVisits.push({
           currentMonday: mondayCount + 1,
           weeksToAnswer,
-          pendingLen,
-          weekLen: weekStore?.length,
+          pendingLen: pendingLen || 0,
+          weekLen: weekStore?.length || 0,
           mondayCount,
           store: storeName,
           grade: "0%",

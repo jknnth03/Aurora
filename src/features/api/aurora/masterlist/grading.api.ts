@@ -19,10 +19,8 @@ export interface IGradingResponse {
   deleted_at?: string | null;
 }
 
+// ✅ FIXED: Only cap_percentage is required for update
 export interface GradingPayloadSchema {
-  name: string;
-  min_score: number;
-  max_score: number;
   cap_percentage: number;
 }
 
@@ -30,6 +28,7 @@ export const gradingApi = api
   .enhanceEndpoints({ addTagTypes: [CONFIG.ENDPOINTS.GRADING] })
   .injectEndpoints({
     endpoints: (builder) => ({
+      // ✅ Returns ARRAY - UnpaginatedApiResponse
       getGradings: builder.query<
         UnpaginatedApiResponse<IGradingResponse>,
         GradingSearchParamsUnpaginated
@@ -52,7 +51,8 @@ export const gradingApi = api
             : [{ type: CONFIG.ENDPOINTS.GRADING as const, id: "LIST" }],
       }),
 
-      // 🔹 GET without ID
+      // ⚠️ DEPRECATED: Use getGradings instead
+      // This returns array but typed as single object (mismatch)
       getGrading: builder.query<ApiResponse<IGradingResponse>, void>({
         query: () => ({
           url: CONFIG.ENDPOINTS.GRADING,
@@ -74,6 +74,7 @@ export const gradingApi = api
         ],
       }),
 
+      // ✅ FIXED: Accepts only cap_percentage in body
       updateGrading: builder.mutation<
         ApiResponse<IGradingResponse>,
         { id: string | number; body: GradingPayloadSchema }

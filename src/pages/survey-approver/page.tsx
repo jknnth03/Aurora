@@ -67,6 +67,13 @@ const SurveyApprover = () => {
     pagination.count = surveyApprovers.data.total;
   }
 
+  const getWeekOrdinal = (week: number): string => {
+    const ordinals = ["1st", "2nd", "3rd", "4th"];
+    return week >= 1 && week <= 4
+      ? `${ordinals[week - 1]} week`
+      : `${week}th week`;
+  };
+
   const columns: Array<
     ITableColumn<Partial<SurveyApproversResponse>, unknown>
   > = [
@@ -112,36 +119,29 @@ const SurveyApprover = () => {
       sortable: true,
     },
     {
-      id: "done_on",
-      label: "Done on",
+      id: "week",
+      label: "Week",
       getValue: (qaItem) => {
-        const createdAt = qaItem?.store_checklist?.[0]?.checklist?.created_at;
-        return createdAt ? moment(createdAt).format("MM/DD/YYYY") : "-";
+        const weekRecord = qaItem?.store_checklist?.[0]?.weekly_record?.[0];
+        const week = weekRecord?.week;
+        return week ? getWeekOrdinal(week) : "-";
       },
       sortable: true,
     },
     {
-      id: "quality_audit",
-      label: "Quality Audit",
+      id: "checklist_date",
+      label: "Checklist Date",
       getValue: (qaItem) => {
-        const startOfMonth = moment().startOf("month");
-        const endOfMonth = moment().endOf("month");
-        let mondayCount = 0;
-        const day = startOfMonth.clone();
-        const weekStore = qaItem?.store_checklist
-          ?.map((checklistItem) => {
-            return checklistItem.weekly_record.map((record) => {
-              return record;
-            });
-          })
-          .flat();
-        while (day.isSameOrBefore(endOfMonth)) {
-          if (day.day() === 1) {
-            mondayCount++;
-          }
-          day.add(1, "day");
-        }
-        return `${weekStore?.length || 0} / ${mondayCount}`;
+        const weekRecord = qaItem?.store_checklist?.[0]?.weekly_record?.[0];
+        const month = weekRecord?.month;
+        const year = weekRecord?.year;
+
+        if (!month || !year) return "-";
+
+        return moment()
+          .month(month - 1)
+          .year(year)
+          .format("MMMM YYYY");
       },
       sortable: true,
     },
@@ -240,12 +240,10 @@ const SurveyApprover = () => {
     const rows = surveyApprovers?.data.data;
     let finalData = rows;
 
-    // Filter by region
     if (region) {
       finalData = finalData?.filter((item) => item.region?.id === region.id);
     }
 
-    // Filter by area
     if (area) {
       finalData = finalData?.filter((item) => item.area?.id === area.id);
     }

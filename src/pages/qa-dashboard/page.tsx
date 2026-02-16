@@ -32,6 +32,7 @@ import { useDispatch } from "react-redux";
 import MonthYearFilter from "./components/month-year-filter.tsx";
 import moment from "moment";
 import { IQADashboardResponse } from "../../features/api/aurora/types/qa-dashboard-types.ts";
+import Tooltip from "@mui/material/Tooltip";
 
 const QADashboard = () => {
   const [isOpenRegions, setIsOpenRegions] = useState(false);
@@ -63,27 +64,38 @@ const QADashboard = () => {
     isLoading,
     isFetching,
     isError,
-  } = useGetQAsQuery({
-    search: currentParams?.q,
-    page: paginationParams.page,
-    per_page: paginationParams.per_page,
-    status: "active",
-    month: date?.getMonth() + 1,
-    year: date?.getFullYear(),
-    region: region?.id || undefined,
-    area: area?.id || undefined,
-  });
+  } = useGetQAsQuery(
+    {
+      search: currentParams?.q,
+      page: paginationParams.page,
+      per_page: paginationParams.per_page,
+      status: "active",
+      month: currentMonth,
+      year: currentYear,
+      region: region?.id || undefined,
+      area: area?.id || undefined,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
-  const { data: previousMonthData } = useGetQAsQuery({
-    search: currentParams?.q,
-    page: paginationParams.page,
-    per_page: paginationParams.per_page,
-    status: "active",
-    month: previousMonth,
-    year: previousYear,
-    region: region?.id || undefined,
-    area: area?.id || undefined,
-  });
+  const { data: previousMonthData, isLoading: isPreviousMonthLoading } =
+    useGetQAsQuery(
+      {
+        search: currentParams?.q,
+        page: paginationParams.page,
+        per_page: paginationParams.per_page,
+        status: "active",
+        month: previousMonth,
+        year: previousYear,
+        region: region?.id || undefined,
+        area: area?.id || undefined,
+      },
+      {
+        refetchOnMountOrArgChange: true,
+      },
+    );
 
   if (
     qaItems?.data.total !== undefined &&
@@ -92,49 +104,115 @@ const QADashboard = () => {
     pagination.count = qaItems.data.total;
   }
 
-  const hasOverdueFromPreviousMonth = (
+  const isStoreCreatedBeforeSelectedMonth = (
     qaItem: IQADashboardResponse,
   ): boolean => {
-    const now = moment();
-    const selectedMonthStart = moment([
-      currentYear,
-      currentMonth - 1,
-      1,
-    ]).startOf("day");
-    const currentMonthStart = moment([now.year(), now.month(), 1]).startOf(
-      "day",
+    if (!qaItem.store_checklist?.[0]?.created_at) {
+      return false;
+    }
+
+    const checklistCreationDate = moment(qaItem.store_checklist[0].created_at);
+    const selectedMonthStart = moment()
+      .year(currentYear)
+      .month(currentMonth - 1)
+      .startOf("month");
+
+    return selectedMonthStart.isBefore(checklistCreationDate, "month");
+  };
+
+  const isNextMonthAccessible = (): boolean => {
+    const today = moment();
+    const todayMonth = today.month() + 1;
+    const todayYear = today.year();
+
+    const selectedDate = moment()
+      .year(currentYear)
+      .month(currentMonth - 1);
+    const isCurrentOrPastMonth = selectedDate.isSameOrBefore(today, "month");
+
+    if (isCurrentOrPastMonth) {
+      return true;
+    }
+
+    const isViewingNextMonth =
+      (currentYear === todayYear && currentMonth === todayMonth + 1) ||
+      (currentYear === todayYear + 1 &&
+        todayMonth === 12 &&
+        currentMonth === 1);
+
+    if (!isViewingNextMonth) {
+      return false;
+    }
+
+    const startOfTodayMonth = moment()
+      .year(todayYear)
+      .month(todayMonth - 1)
+      .startOf("month");
+    const endOfTodayMonth = moment()
+      .year(todayYear)
+      .month(todayMonth - 1)
+      .endOf("month");
+    let mondayCount = 0;
+    const day = startOfTodayMonth.clone();
+
+    while (day.isSameOrBefore(endOfTodayMonth)) {
+      if (day.day() === 1) {
+        mondayCount++;
+      }
+      day.add(1, "day");
+    }
+
+    const currentWeekOfMonth = Math.ceil(today.date() / 7);
+
+    return currentWeekOfMonth >= mondayCount;
+  };
+
+  const isFutureMonthSelected = (): boolean => {
+    const today = moment();
+    const selectedDate = moment()
+      .year(currentYear)
+      .month(currentMonth - 1);
+
+    return selectedDate.isAfter(today, "month");
+  };
+
+  const isStoreBlocked = (qaItem: IQADashboardResponse): boolean => {
+    const storeCreatedAfterSelectedMonth =
+      isStoreCreatedBeforeSelectedMonth(qaItem);
+    const hasPreviousMonthOverdue = checkPreviousMonthHasOverdue(qaItem.id);
+    const isFutureMonth = isFutureMonthSelected();
+    const canAccessNextMonth = isNextMonthAccessible();
+
+    return (
+      storeCreatedAfterSelectedMonth ||
+      hasPreviousMonthOverdue ||
+      (isFutureMonth && !canAccessNextMonth)
+    );
+  };
+
+  const checkPreviousMonthHasOverdue = (storeId: number): boolean => {
+    if (!previousMonthData?.data?.data) return false;
+
+    const previousStore = previousMonthData.data.data.find(
+      (store) => store.id === storeId,
     );
 
-    if (selectedMonthStart.isBefore(currentMonthStart)) {
-      return false;
-    }
+    if (!previousStore) return false;
 
-    const storeCreatedAt = moment(qaItem.created_at).startOf("day");
-    const storeCreatedYear = storeCreatedAt.year();
-    const storeCreatedMonth = storeCreatedAt.month() + 1;
+    if (!previousStore?.store_checklist?.[0]?.weekly_record) return false;
 
-    if (
-      storeCreatedYear > currentYear ||
-      (storeCreatedYear === currentYear && storeCreatedMonth >= currentMonth)
-    ) {
-      return false;
-    }
+    const weeklyRecords = previousStore.store_checklist[0].weekly_record;
 
-    const previousStore = previousMonthData?.data.data?.find(
-      (store) => store.id === qaItem.id,
-    );
+    if (weeklyRecords.length === 0) return false;
 
-    if (!previousStore) {
-      return false;
-    }
-
-    if (!previousStore?.store_checklist?.[0]?.weekly_record) {
-      return false;
-    }
-
-    const startOfPrevMonth = moment([previousYear, previousMonth - 1, 1]);
-    const endOfPrevMonth = moment(startOfPrevMonth).endOf("month");
-
+    const startOfPrevMonth = moment()
+      .year(previousYear)
+      .month(previousMonth - 1)
+      .startOf("month");
+    const endOfPrevMonth = moment()
+      .year(previousYear)
+      .month(previousMonth - 1)
+      .endOf("month");
     let mondayCount = 0;
     const day = startOfPrevMonth.clone();
 
@@ -145,12 +223,13 @@ const QADashboard = () => {
       day.add(1, "day");
     }
 
-    const weeklyRecords = previousStore.store_checklist[0].weekly_record;
-    const completedCount = weeklyRecords.filter(
+    const allCompleted = weeklyRecords.every(
       (record) => record.status === "Completed" || record.status === "Approved",
-    ).length;
+    );
 
-    return completedCount < mondayCount;
+    const hasCorrectNumberOfWeeks = weeklyRecords.length === mondayCount;
+
+    return !(allCompleted && hasCorrectNumberOfWeeks);
   };
 
   const columns: Array<ITableColumn<Partial<IQADashboardResponse>, unknown>> = [
@@ -199,7 +278,14 @@ const QADashboard = () => {
       id: "quality_audit",
       label: "Quality Audit",
       getValue: (qaItem) => {
-        const startOfMonth = moment().startOf("month");
+        const startOfMonth = moment()
+          .year(currentYear)
+          .month(currentMonth - 1)
+          .startOf("month");
+        const endOfMonth = moment()
+          .year(currentYear)
+          .month(currentMonth - 1)
+          .endOf("month");
         let mondayCount = 0;
         const day = startOfMonth.clone();
         const weekStore = qaItem?.store_checklist
@@ -209,7 +295,7 @@ const QADashboard = () => {
             });
           })
           .flat();
-        while (mondayCount < 4) {
+        while (day.isSameOrBefore(endOfMonth)) {
           if (day.day() === 1) {
             mondayCount++;
           }
@@ -224,8 +310,49 @@ const QADashboard = () => {
       label: "Status",
       getValue: () => {},
       renderCell: (_unused, item) => {
-        const startOfMonth = moment().startOf("month");
-        const endOfMonth = moment().endOf("month");
+        const storeCreatedAfterSelectedMonth =
+          isStoreCreatedBeforeSelectedMonth(item);
+
+        if (storeCreatedAfterSelectedMonth) {
+          return (
+            <Tooltip title="Store Not Yet Created" arrow placement="top">
+              <span>
+                <StatusChip status="Store Not Yet Created" key={item.id} />
+              </span>
+            </Tooltip>
+          );
+        }
+
+        if (isFutureMonthSelected() && !isNextMonthAccessible()) {
+          return (
+            <Tooltip title="Future Month Locked" arrow placement="top">
+              <span>
+                <StatusChip status="Future Month Locked" key={item.id} />
+              </span>
+            </Tooltip>
+          );
+        }
+
+        const hasPreviousMonthOverdue = checkPreviousMonthHasOverdue(item.id);
+
+        if (hasPreviousMonthOverdue) {
+          return (
+            <Tooltip title="Previous Month Incomplete" arrow placement="top">
+              <span>
+                <StatusChip status="Previous Month Incomplete" key={item.id} />
+              </span>
+            </Tooltip>
+          );
+        }
+
+        const startOfMonth = moment()
+          .year(currentYear)
+          .month(currentMonth - 1)
+          .startOf("month");
+        const endOfMonth = moment()
+          .year(currentYear)
+          .month(currentMonth - 1)
+          .endOf("month");
         let mondayCount = 0;
         const day = startOfMonth.clone();
         while (day.isSameOrBefore(endOfMonth)) {
@@ -265,7 +392,13 @@ const QADashboard = () => {
         } else {
           status = "Pending";
         }
-        return <StatusChip status={status} key={item.id} />;
+        return (
+          <Tooltip title={status} arrow placement="top">
+            <span>
+              <StatusChip status={status} key={item.id} />
+            </span>
+          </Tooltip>
+        );
       },
       width: 150,
     },
@@ -274,7 +407,70 @@ const QADashboard = () => {
   const getRightClickMenuItems = (
     qaItem: IQADashboardResponse,
   ): Array<ContextMenuItem<IQADashboardResponse>> => {
-    const menuItems: Array<ContextMenuItem<IQADashboardResponse>> = [
+    const storeCreatedAfterSelectedMonth =
+      isStoreCreatedBeforeSelectedMonth(qaItem);
+    const hasPreviousMonthOverdue = checkPreviousMonthHasOverdue(qaItem.id);
+    const isFutureMonth = isFutureMonthSelected();
+    const canAccessNextMonth = isNextMonthAccessible();
+
+    if (storeCreatedAfterSelectedMonth) {
+      return [
+        {
+          id: `blocked-${qaItem.id}`,
+          label: "Store Not Yet Created",
+          icon: <FrameCorners />,
+          onClick: () => {
+            enqueueSnackbar(
+              `Store ${qaItem.name} was created on ${moment(
+                qaItem.store_checklist[0].created_at,
+              ).format(
+                "MMMM YYYY",
+              )}. Cannot access data before store creation.`,
+              { variant: "warning" },
+            );
+          },
+        },
+      ];
+    }
+
+    if (isFutureMonth && !canAccessNextMonth) {
+      return [
+        {
+          id: `blocked-${qaItem.id}`,
+          label: "Future Month Locked",
+          icon: <FrameCorners />,
+          onClick: () => {
+            enqueueSnackbar(
+              `Cannot access future month. Please complete the last week of current month first.`,
+              { variant: "warning" },
+            );
+          },
+        },
+      ];
+    }
+
+    if (hasPreviousMonthOverdue) {
+      return [
+        {
+          id: `blocked-${qaItem.id}`,
+          label: "Cannot Start - Previous Month Incomplete",
+          icon: <FrameCorners />,
+          onClick: () => {
+            enqueueSnackbar(
+              `Cannot start checking for ${
+                qaItem.name
+              }. Please complete all checks for ${moment()
+                .year(previousYear)
+                .month(previousMonth - 1)
+                .format("MMMM YYYY")} first.`,
+              { variant: "warning" },
+            );
+          },
+        },
+      ];
+    }
+
+    return [
       {
         id: `view-${qaItem.id}`,
         label: "View Data",
@@ -292,11 +488,8 @@ const QADashboard = () => {
             }),
           );
         },
-        disabled: hasOverdueFromPreviousMonth(qaItem),
       },
     ];
-
-    return menuItems;
   };
 
   const transformedData = useMemo<IQADashboardResponse[]>(() => {
@@ -433,13 +626,22 @@ const QADashboard = () => {
         columns={columns}
         isError={isError}
         data={transformedData ?? []}
-        isLoading={isLoading}
+        isLoading={isLoading || isPreviousMonthLoading}
         isFetching={isFetching}
         expandedRows={expandedRows ?? {}}
         onExpandedRowsChange={setExpandedRows}
-        rightClickMenuItems={getRightClickMenuItems}
-        actions={getRightClickMenuItems}
-        L
+        rightClickMenuItems={(qaItem) => {
+          if (isStoreBlocked(qaItem)) {
+            return [];
+          }
+          return getRightClickMenuItems(qaItem);
+        }}
+        actions={(qaItem) => {
+          if (isStoreBlocked(qaItem)) {
+            return [];
+          }
+          return getRightClickMenuItems(qaItem);
+        }}
         pagination={pagination}
       />
     </MasterlistLayout>

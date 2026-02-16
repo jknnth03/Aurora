@@ -434,6 +434,7 @@ export const CONFIG = {
     AREA: "/area",
     SCORE_RATING: "/rating",
     GRADING: "/grade_rule",
+    ALLOWABLE_DAYS: "/allowable_days",
     QA: "/quality_assurance",
     SURVEY_APPROVER: "/approver_dashboard",
     AREA_HEAD: "/region_area_head?user_type=area_head",

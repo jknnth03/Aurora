@@ -43,8 +43,7 @@ export default function MonthYearFilter({
       sx={{
         width: "fit-content",
         height: "100%",
-      }}
-    >
+      }}>
       <Grid container sx={{ height: "100%" }}>
         <Grid sx={{ display: "flex", alignItems: "center" }}>
           <IconButton onClick={handlePrevMonth}>
@@ -59,12 +58,10 @@ export default function MonthYearFilter({
               justifyContent: "center",
               width: "fit-content",
               height: "40px",
-            }}
-          >
+            }}>
             <Typography
               sx={{ display: "flex", alignItems: "center", height: "100%" }}
-              variant="h6"
-            >
+              variant="h6">
               {currentMonth} {currentYear}
             </Typography>
           </Box>

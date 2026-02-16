@@ -198,7 +198,8 @@ export const SurveyReport = ({
         touchedData?.store_checklist?.[0]?.id.toString() || "",
     },
     {
-      skip: true,
+      skip: false,
+      refetchOnMountOrArgChange: true,
     },
   );
   const weeklyRecord =

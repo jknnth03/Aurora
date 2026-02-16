@@ -190,7 +190,7 @@ const ChecklistUserForm = forwardRef<
         touchedData?.store_checklist?.[0]?.id.toString() || "",
     },
     {
-      skip: true,
+      skip: false,
       refetchOnMountOrArgChange: true,
     },
   );
@@ -272,18 +272,35 @@ const ChecklistUserForm = forwardRef<
           (item) => item !== undefined,
         ) || [];
 
-      setTimeIn(
-        moment(
-          qaData?.data?.store_checklist?.[0]?.weekly_record?.[0]?.start_time,
-          "HH:mm:ss",
-        ).format("hh:mm:ss A"),
-      );
-      setTimeEnd(
-        moment(
-          qaData?.data?.store_checklist?.[0]?.weekly_record?.[0]?.end_time,
-          "HH:mm:ss",
-        ).format("hh:mm:ss A"),
-      );
+      // Safely parse and set the start time
+      const startTime =
+        qaData?.data?.store_checklist?.[0]?.weekly_record?.[0]?.start_time;
+      if (startTime) {
+        const parsedTime = moment(startTime, "HH:mm:ss", true);
+        if (parsedTime.isValid()) {
+          setTimeIn(parsedTime.format("hh:mm:ss A"));
+        } else {
+          // Fallback to current time if parsing fails
+          setTimeIn(moment().format("hh:mm:ss A"));
+        }
+      } else {
+        // No start time available, use current time
+        setTimeIn(moment().format("hh:mm:ss A"));
+      }
+
+      // Safely parse and set the end time
+      const endTime =
+        qaData?.data?.store_checklist?.[0]?.weekly_record?.[0]?.end_time;
+      if (endTime) {
+        const parsedEndTime = moment(endTime, "HH:mm:ss", true);
+        if (parsedEndTime.isValid()) {
+          setTimeEnd(parsedEndTime.format("hh:mm:ss A"));
+        } else {
+          setTimeEnd("hh:mm:ss");
+        }
+      } else {
+        setTimeEnd("hh:mm:ss");
+      }
 
       sections.forEach((section, sectionIndex) => {
         setValue(
@@ -480,8 +497,8 @@ const ChecklistUserForm = forwardRef<
             disabled={
               isStoreChecklist ||
               isChecklist ||
-              (qaData?.data?.store_checklist?.[0]?.weekly_record?.length ??
-                0) != 0 ||
+              // (qaData?.data?.store_checklist?.[0]?.weekly_record?.length ??
+              //   0) != 0 ||
               !touchedChecklistData.isOverdueFillup ||
               (watchedResponse?.answer?.type == "multiple_choice" &&
                 watchedResponse?.answer?.data?.answer == 1)
@@ -539,8 +556,8 @@ const ChecklistUserForm = forwardRef<
                         disabled={
                           isStoreChecklist ||
                           isChecklist ||
-                          (qaData?.data?.store_checklist?.[0]?.weekly_record
-                            ?.length ?? 0) != 0 ||
+                          // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                          //   ?.length ?? 0) != 0 ||
                           !touchedChecklistData.isOverdueFillup
                         }
                       />
@@ -575,8 +592,8 @@ const ChecklistUserForm = forwardRef<
                       disabled={
                         isStoreChecklist ||
                         isChecklist ||
-                        (qaData?.data?.store_checklist?.[0]?.weekly_record
-                          ?.length ?? 0) != 0 ||
+                        // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                        //   ?.length ?? 0) != 0 ||
                         !touchedChecklistData.isOverdueFillup
                       }
                       control={
@@ -636,8 +653,8 @@ const ChecklistUserForm = forwardRef<
               disabled={
                 isStoreChecklist ||
                 isChecklist ||
-                (qaData?.data?.store_checklist?.[0]?.weekly_record?.length ??
-                  0) != 0 ||
+                // (qaData?.data?.store_checklist?.[0]?.weekly_record?.length ??
+                //   0) != 0 ||
                 !touchedChecklistData.isOverdueFillup
               }
               placeholder="Enter your response"
@@ -716,8 +733,8 @@ const ChecklistUserForm = forwardRef<
                         disabled={
                           ((isStoreChecklist ||
                             isChecklist ||
-                            (qaData?.data?.store_checklist?.[0]?.weekly_record
-                              ?.length ?? 0) != 0 ||
+                            // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                            //   ?.length ?? 0) != 0 ||
                             !touchedChecklistData.isOverdueFillup ||
                             viewImage) &&
                             !value) ||
@@ -730,8 +747,8 @@ const ChecklistUserForm = forwardRef<
                           if (
                             isStoreChecklist ||
                             isChecklist ||
-                            (qaData?.data?.store_checklist?.[0]?.weekly_record
-                              ?.length ?? 0) != 0 ||
+                            // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                            //   ?.length ?? 0) != 0 ||
                             value
                           ) {
                             setViewImage(true);
@@ -1012,10 +1029,14 @@ const ChecklistUserForm = forwardRef<
       });
       setTimeEnd(moment().format("HH:mm:ss"));
       const timeExit = moment().format("HH:mm:ss");
-      formData.append(
-        "start_time",
-        moment(timeIn, "HH:mm:ss A").format("HH:mm:ss"),
-      );
+
+      // Parse and validate start_time with strict mode
+      const parsedTimeIn = moment(timeIn, "hh:mm:ss A", true);
+      const validStartTime = parsedTimeIn.isValid()
+        ? parsedTimeIn.format("HH:mm:ss")
+        : moment().format("HH:mm:ss"); // Fallback to current time if invalid
+
+      formData.append("start_time", validStartTime);
       formData.append("end_time", timeExit);
       try {
         const isOverdued =
@@ -1158,8 +1179,8 @@ const ChecklistUserForm = forwardRef<
                             disabled={
                               isStoreChecklist ||
                               isChecklist ||
-                              (qaData?.data?.store_checklist?.[0]?.weekly_record
-                                ?.length ?? 0) != 0 ||
+                              // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                              //   ?.length ?? 0) != 0 ||
                               !touchedChecklistData.isOverdueFillup
                             }
                           />
@@ -1170,8 +1191,8 @@ const ChecklistUserForm = forwardRef<
                             disabled={
                               isStoreChecklist ||
                               isChecklist ||
-                              (qaData?.data?.store_checklist?.[0]?.weekly_record
-                                ?.length ?? 0) != 0 ||
+                              // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                              //   ?.length ?? 0) != 0 ||
                               !touchedChecklistData.isOverdueFillup
                             }
                           />
@@ -1219,8 +1240,8 @@ const ChecklistUserForm = forwardRef<
                             disabled={
                               isStoreChecklist ||
                               isChecklist ||
-                              (qaData?.data?.store_checklist?.[0]?.weekly_record
-                                ?.length ?? 0) != 0 ||
+                              // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                              //   ?.length ?? 0) != 0 ||
                               !touchedChecklistData.isOverdueFillup
                             }
                           />
@@ -1241,8 +1262,8 @@ const ChecklistUserForm = forwardRef<
                             disabled={
                               isStoreChecklist ||
                               isChecklist ||
-                              (qaData?.data?.store_checklist?.[0]?.weekly_record
-                                ?.length ?? 0) != 0 ||
+                              // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                              //   ?.length ?? 0) != 0 ||
                               !touchedChecklistData.isOverdueFillup
                             }
                           />
@@ -1280,8 +1301,8 @@ const ChecklistUserForm = forwardRef<
                             disabled={
                               isStoreChecklist ||
                               isChecklist ||
-                              (qaData?.data?.store_checklist?.[0]?.weekly_record
-                                ?.length ?? 0) != 0 ||
+                              // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                              //   ?.length ?? 0) != 0 ||
                               !touchedChecklistData.isOverdueFillup
                             }
                           />
@@ -1292,8 +1313,8 @@ const ChecklistUserForm = forwardRef<
                             disabled={
                               isStoreChecklist ||
                               isChecklist ||
-                              (qaData?.data?.store_checklist?.[0]?.weekly_record
-                                ?.length ?? 0) != 0 ||
+                              // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                              //   ?.length ?? 0) != 0 ||
                               !touchedChecklistData.isOverdueFillup
                             }
                           />
@@ -1318,8 +1339,8 @@ const ChecklistUserForm = forwardRef<
                         disabled={
                           isStoreChecklist ||
                           isChecklist ||
-                          (qaData?.data?.store_checklist?.[0]?.weekly_record
-                            ?.length ?? 0) != 0 ||
+                          // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                          //   ?.length ?? 0) != 0 ||
                           !touchedChecklistData.isOverdueFillup
                         }
                         multiple
@@ -1383,8 +1404,8 @@ const ChecklistUserForm = forwardRef<
                         disabled={
                           isStoreChecklist ||
                           isChecklist ||
-                          (qaData?.data?.store_checklist?.[0]?.weekly_record
-                            ?.length ?? 0) != 0 ||
+                          // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                          //   ?.length ?? 0) != 0 ||
                           !touchedChecklistData.isOverdueFillup
                         }
                         sx={{
@@ -1419,8 +1440,8 @@ const ChecklistUserForm = forwardRef<
                         disabled={
                           isStoreChecklist ||
                           isChecklist ||
-                          (qaData?.data?.store_checklist?.[0]?.weekly_record
-                            ?.length ?? 0) != 0 ||
+                          // (qaData?.data?.store_checklist?.[0]?.weekly_record
+                          //   ?.length ?? 0) != 0 ||
                           !touchedChecklistData.isOverdueFillup
                         }
                         {...field}
